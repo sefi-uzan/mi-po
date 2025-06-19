@@ -1,32 +1,30 @@
 'use client'
 
+import { Building } from "@/lib/types"
+
 interface BuildingHeaderProps {
-  buildingName: string
-  createdAt: Date | string
+  building: Building
   onInviteClick: () => void
-  residents?: any[]
   presenceData?: Record<string, boolean>
 }
 
 export const BuildingHeader = ({ 
-  buildingName, 
-  createdAt, 
+  building,
   onInviteClick, 
-  residents = [], 
   presenceData = {} 
 }: BuildingHeaderProps) => {
-  const totalResidents = residents.length
-  const presentResidents = residents.filter(resident => presenceData[resident.id] === true).length
-  const awayResidents = residents.filter(resident => presenceData[resident.id] === false).length
+  const totalResidents = building.residents?.length || 0
+  const presentResidents = building.residents?.filter(resident => presenceData[resident.id] === true).length || 0
+  const awayResidents = building.residents?.filter(resident => presenceData[resident.id] === false).length || 0
 
   return (
     <div className="flex items-center justify-between">
       <div className="flex-1">
        <div className="flex items-center justify-between">
         <div>
-       <h1 className="text-2xl font-semibold text-zinc-100">{buildingName}</h1>
+       <h1 className="text-2xl font-semibold text-zinc-100">{building.name}</h1>
         <p className="text-sm text-zinc-400 mb-3">
-          Created {new Date(createdAt).toLocaleDateString('en-US', {
+          Created {new Date(building.createdAt).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
             day: 'numeric'

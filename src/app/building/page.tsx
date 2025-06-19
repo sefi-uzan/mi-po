@@ -1,12 +1,12 @@
 'use client'
-import { client } from "@/lib/client"
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { useState, useEffect } from "react"
-import QRCode from "qrcode"
-import { toast } from "react-hot-toast"
 import { BuildingHeader } from "@/app/components/building-header"
 import { InviteDialog } from "@/app/components/invite-dialog"
 import { ResidentCard } from "@/app/components/resident-card"
+import { client } from "@/lib/client"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import QRCode from "qrcode"
+import { useState } from "react"
+import { toast } from "react-hot-toast"
 
 const BuildingPage = () => {
     const [showInviteDialog, setShowInviteDialog] = useState(false)
@@ -29,7 +29,7 @@ const BuildingPage = () => {
         queryFn: async () => {
             const res = await client.building.checkPresence.$get()
             const data = await res.json()
-            return data.reduce((acc: Record<string, boolean>, item: any) => {
+            return data.reduce((acc: Record<string, boolean>, item: { residentId: string; isPresent: boolean }) => {
                 acc[item.residentId] = item.isPresent
                 return acc
             }, {})
@@ -95,10 +95,8 @@ const BuildingPage = () => {
         <div className="container flex flex-col items-center justify-center gap-6 px-4 py-16">
             <div className="w-full max-w-4xl backdrop-blur-lg bg-black/15 px-8 py-6 rounded-md text-zinc-100/75 space-y-6">
                 <BuildingHeader 
-                    buildingName={building.name}
-                    createdAt={building.createdAt}
+                    building={building}
                     onInviteClick={handleInviteClick}
-                    residents={building.residents}
                     presenceData={presenceData}
                 />
 
