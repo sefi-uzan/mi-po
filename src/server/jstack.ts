@@ -18,7 +18,7 @@ interface Env {
     DATABASE_URL: string,
     JWT_REFRESH_SECRET: string,
     JWT_SECRET: string,
-    JWT_EXPIRATION_TIME: number,
+    JWT_EXPIRATION_TIME: string,
     NODE_ENV: string,
     TWILIO_ACCOUNT_SID: string,
     TWILIO_AUTH_TOKEN: string,

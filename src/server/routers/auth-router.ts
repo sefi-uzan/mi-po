@@ -1,12 +1,12 @@
+import { generateSecureInviteCode, normalizePhoneNumber } from "@/lib/utils"
 import { buildings, presenceStatus, residents } from "@/server/db/schema"
 import { and, eq } from "drizzle-orm"
 import { env } from "hono/adapter"
-import { setSignedCookie, deleteCookie } from "hono/cookie"
+import { deleteCookie, setSignedCookie } from "hono/cookie"
 import { HTTPException } from "hono/http-exception"
 import { sign } from "hono/jwt"
 import { z } from "zod"
 import { j, publicProcedure } from "../jstack"
-import { normalizePhoneNumber } from "@/lib/utils"
 
 
 export const authRouter = j.router({
@@ -43,7 +43,7 @@ export const authRouter = j.router({
 
     const buildingResult = await db.insert(buildings).values({
       name: input.buildingName,
-      inviteCode: Math.random().toString(36).substring(2, 12).toUpperCase()
+      inviteCode: generateSecureInviteCode()
     }).returning()
 
   if (!buildingResult[0]) {
@@ -77,7 +77,7 @@ export const authRouter = j.router({
     const token = await sign({
       id: newResident[0].id,
       role: "owner",
-      exp: Date.now() + JWT_EXPIRATION_TIME,
+      exp: Math.floor((Date.now() + parseInt(JWT_EXPIRATION_TIME, 10)) / 1000),
       iat: Math.floor(Date.now() / 1000),
     }, JWT_SECRET)
 
@@ -126,7 +126,7 @@ export const authRouter = j.router({
     const token = await sign({
       id: resident[0].id,
       role: resident[0].type,
-      exp: Date.now() + JWT_EXPIRATION_TIME,
+      exp: Math.floor((Date.now() + parseInt(JWT_EXPIRATION_TIME, 10)) / 1000),
       iat: Math.floor(Date.now() / 1000),
     }, JWT_SECRET)
     
@@ -221,7 +221,7 @@ export const authRouter = j.router({
     const token = await sign({
       id: newResident[0].id,
       role: "resident",
-      exp: Date.now() + JWT_EXPIRATION_TIME,
+      exp: Math.floor((Date.now() + parseInt(JWT_EXPIRATION_TIME, 10)) / 1000),
       iat: Math.floor(Date.now() / 1000),
     }, JWT_SECRET)
 
@@ -266,13 +266,14 @@ export const authRouter = j.router({
     if (resident[0].phoneVerified) {
       throw new HTTPException(400, { message: "Please log in with your phone number" })
     }
+ 
+        const token = await sign({
+        id: resident[0].id,
+        role: resident[0].type,
+        exp: Math.floor((Date.now() + parseInt(JWT_EXPIRATION_TIME, 10)) / 1000),
+        iat: Math.floor(Date.now() / 1000),
+      }, JWT_SECRET)
 
-    const token = await sign({
-      id: resident[0].id,
-      role: resident[0].type,
-      exp: Date.now() + JWT_EXPIRATION_TIME,
-      iat: Math.floor(Date.now() / 1000),
-    }, JWT_SECRET)
 
     await setSignedCookie(c, "token", token, JWT_SECRET,
       {
@@ -302,7 +303,13 @@ export const authRouter = j.router({
     try {
       const verification = await twilio.verify.v2.services(TWILIO_VERIFY_SERVICE_SID).verifications.create({
         to: normalizedPhoneNumber,
-        channel: "sms"  
+        channel: "sms",
+        rateLimits: {
+          "sms-code-limit": {
+            quantity: 5,
+            interval: 60,
+          }
+        }  
       })
       
       if (verification.status === "pending") {

@@ -25,3 +25,17 @@ export function normalizePhoneNumber(phoneNumber: string): string | null {
     
   return israelE164Regex.test(normalized) ? normalized : null
 }
+
+export function generateSecureInviteCode(): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const codeLength = 10;
+  
+  // Use Web Crypto API for cryptographically secure random bytes
+  const randomBytes = new Uint8Array(codeLength);
+  crypto.getRandomValues(randomBytes);
+  
+  // Convert random bytes to characters from our allowed set
+  return Array.from(randomBytes)
+    .map(byte => chars[byte % chars.length])
+    .join('');
+}

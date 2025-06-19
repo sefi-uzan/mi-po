@@ -11,7 +11,7 @@ import {
   uuid,
   pgEnum
 } from "drizzle-orm/pg-core"
-import { relations } from "drizzle-orm"
+import { relations, sql } from "drizzle-orm"
 
 export const residentTypeEnum = pgEnum('resident_type', ['resident', 'owner'])
 
@@ -48,7 +48,6 @@ export const residents = pgTable(
     index("residents_building_id_idx").on(table.buildingId),
     index("residents_phone_number_idx").on(table.phoneNumber),
     index("residents_type_idx").on(table.type),
-    unique("one_owner_per_building").on(table.buildingId, table.type),
   ]
 )
 

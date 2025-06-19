@@ -1,0 +1,1 @@
+ALTER TABLE "residents" DROP CONSTRAINT "one_owner_per_building";

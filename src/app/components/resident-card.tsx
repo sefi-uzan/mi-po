@@ -62,7 +62,7 @@ export const ResidentCard = ({ resident, currentUserId, presenceData }: Resident
         )}
         
         {resident.details && (
-          <p className="text-sm text-zinc-300 mt-2">
+          <p className="text-sm text-zinc-300 mt-2 break-all">
             {resident.details}
           </p>
         )}
