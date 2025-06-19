@@ -11,7 +11,7 @@ import {
   uuid,
   pgEnum
 } from "drizzle-orm/pg-core"
-import { relations, sql } from "drizzle-orm"
+import { relations } from "drizzle-orm"
 
 export const residentTypeEnum = pgEnum('resident_type', ['resident', 'owner'])
 
