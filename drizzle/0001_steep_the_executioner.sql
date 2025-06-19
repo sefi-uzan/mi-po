@@ -1,0 +1,3 @@
+ALTER TABLE "presence_status" ADD COLUMN "building_id" integer NOT NULL;--> statement-breakpoint
+ALTER TABLE "presence_status" ADD CONSTRAINT "presence_status_building_id_buildings_id_fk" FOREIGN KEY ("building_id") REFERENCES "public"."buildings"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+CREATE INDEX "presence_status_building_id_idx" ON "presence_status" USING btree ("building_id");

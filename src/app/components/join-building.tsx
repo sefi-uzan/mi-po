@@ -101,7 +101,7 @@ export const JoinBuilding = ({ initialInviteCode = "" }: JoinBuildingProps) => {
               type="button"
               onClick={() => sendSms({ phoneNumber })}
               disabled={isSendingSms}
-              className="w-full rounded-md text-sm ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-zinc-600 hover:ring-zinc-500 h-10 px-4 py-2 bg-transparent text-zinc-300 transition"
+              className="cursor-pointer w-full rounded-md text-sm ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-zinc-600 hover:ring-zinc-500 h-10 px-4 py-2 bg-transparent text-zinc-300 transition"
             >
               {isSendingSms ? "Sending..." : "Send Verification Code"}
             </button>
@@ -136,7 +136,7 @@ export const JoinBuilding = ({ initialInviteCode = "" }: JoinBuildingProps) => {
         <button
           disabled={isJoining}
           type="submit"
-          className="rounded-md text-base/6 ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-transparent hover:ring-zinc-100 h-12 px-10 py-3 bg-brand-700 text-zinc-800 font-medium bg-gradient-to-tl from-zinc-300 to-zinc-200 transition hover:bg-brand-800"
+          className="cursor-pointer rounded-md text-base/6 ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-transparent hover:ring-zinc-100 h-12 px-10 py-3 bg-brand-700 text-zinc-800 font-medium bg-gradient-to-tl from-zinc-300 to-zinc-200 transition hover:bg-brand-800"
         >
           {isJoining ? "Joining..." : "Join Building"}
         </button>

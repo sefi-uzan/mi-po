@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"
 import { TypeSelection } from "./components/type-selection"
+import Image from "next/image"
 
 export default async function Home() {
     return (    
@@ -12,7 +13,8 @@ export default async function Home() {
         "from-white to-gray-50"
       )}
     >
-      <span>Mi Po</span>
+      <Image src="/logo.png" alt="Mi Po" width={100} height={100} />
+      <span className="text-2xl font-bold">Mi Po</span>
     </h1>
 
     <p className="text-[#ececf399] text-lg/7 md:text-xl/8 text-pretty sm:text-wrap sm:text-center text-center mb-8">

@@ -1,4 +1,4 @@
-import { buildings, residents } from "@/server/db/schema"
+import { buildings, presenceStatus, residents } from "@/server/db/schema"
 import { and, eq } from "drizzle-orm"
 import { env } from "hono/adapter"
 import { setSignedCookie, deleteCookie } from "hono/cookie"
@@ -63,6 +63,16 @@ export const authRouter = j.router({
       throw new HTTPException(500, { message: "Failed to create resident" })
     }
     
+    const presence = await db.insert(presenceStatus).values({
+      residentId: newResident[0].id,
+      buildingId: buildingResult[0].id,
+      isPresent: false,
+      lastUpdated: new Date()
+    }).returning()
+
+    if (!presence[0]) {
+      throw new HTTPException(500, { message: "Failed to create presence status" })
+    }
 
     const token = await sign({
       id: newResident[0].id,
@@ -74,7 +84,7 @@ export const authRouter = j.router({
     await setSignedCookie(c, "token", token, JWT_SECRET,
       {
         path: "/",
-        domain: NODE_ENV === "production" ? DOMAIN : ".mi-po.com",
+        domain: NODE_ENV === "production" ? DOMAIN : undefined,
         secure: NODE_ENV === "production",
         httpOnly: true,
         sameSite: "lax"
@@ -124,7 +134,7 @@ export const authRouter = j.router({
     await setSignedCookie(c, "token", token, JWT_SECRET,
       {
         path: "/",
-        domain: NODE_ENV === "production" ? DOMAIN : ".mi-po.com",
+        domain: NODE_ENV === "production" ? DOMAIN : undefined,
         secure: NODE_ENV === "production",
         httpOnly: true,
         sameSite: "lax"
@@ -149,8 +159,21 @@ export const authRouter = j.router({
     }
 
     if (phoneNumber && code) {
+      const normalizedPhoneNumber = normalizePhoneNumber(phoneNumber)
+
+      if (!normalizedPhoneNumber) {
+        throw new HTTPException(400, { message: "Invalid phone number format" })
+      }
+
+      const existingResident = await db.select().from(residents)
+        .where(eq(residents.phoneNumber, normalizedPhoneNumber))
+        .limit(1)
+
+      if (existingResident[0]) {
+        throw new HTTPException(409, { message: "A user with this phone number already exists" })
+      }
       const verification = await twilio.verify.v2.services(TWILIO_VERIFY_SERVICE_SID).verificationChecks.create({
-        to: phoneNumber,
+        to: normalizedPhoneNumber,
         code: code
       })
   
@@ -184,6 +207,17 @@ export const authRouter = j.router({
       throw new HTTPException(500, { message: "Failed to create resident" })
     }
 
+    const presence = await db.insert(presenceStatus).values({
+      residentId: newResident[0].id,
+      buildingId: building[0].id,
+      isPresent: false,
+      lastUpdated: new Date()
+    }).returning()
+
+    if (!presence[0]) {
+      throw new HTTPException(500, { message: "Failed to create presence status" })
+    }
+
     const token = await sign({
       id: newResident[0].id,
       role: "resident",
@@ -194,7 +228,7 @@ export const authRouter = j.router({
     await setSignedCookie(c, "token", token, JWT_SECRET,
       {
         path: "/",
-        domain: NODE_ENV === "production" ? DOMAIN : ".mi-po.com",
+        domain: NODE_ENV === "production" ? DOMAIN : undefined,
         secure: NODE_ENV === "production",
         httpOnly: true,
         sameSite: "lax"
@@ -243,7 +277,7 @@ export const authRouter = j.router({
     await setSignedCookie(c, "token", token, JWT_SECRET,
       {
         path: "/",
-        domain: NODE_ENV === "production" ? DOMAIN : ".mi-po.com",
+        domain: NODE_ENV === "production" ? DOMAIN : undefined,
         secure: NODE_ENV === "production",
         httpOnly: true,
         sameSite: "lax"

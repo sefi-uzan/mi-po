@@ -1,13 +1,6 @@
 import { cn } from "@/lib/utils"
-import type { Metadata } from "next"
 
-export const metadata: Metadata = {
-  title: "Mi Po",
-  description: "An emergency situation building resident system",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
-}
-
-export default function RootLayout({
+export default function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode

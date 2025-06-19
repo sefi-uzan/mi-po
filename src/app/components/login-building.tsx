@@ -87,7 +87,7 @@ export const LoginBuilding = () => {
           className={`flex-1 rounded-md text-sm py-2 px-4 transition ${
             loginMethod === 'phone'
               ? 'bg-zinc-600 text-zinc-100'
-              : 'bg-transparent text-zinc-400 hover:text-zinc-300'
+              : 'bg-transparent text-zinc-400 hover:text-zinc-300 cursor-pointer'
           }`}
         >
           Phone Number
@@ -100,7 +100,7 @@ export const LoginBuilding = () => {
           className={`flex-1 rounded-md text-sm py-2 px-4 transition ${
             loginMethod === 'name'
               ? 'bg-zinc-600 text-zinc-100'
-              : 'bg-transparent text-zinc-400 hover:text-zinc-300'
+              : 'bg-transparent text-zinc-400 hover:text-zinc-300 cursor-pointer'
           }`}
         >
           Name + Code
@@ -122,7 +122,7 @@ export const LoginBuilding = () => {
               <button
                 disabled={isSendingSms}
                 type="submit"
-                className="rounded-md text-base/6 ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-transparent hover:ring-zinc-100 h-12 px-10 py-3 bg-brand-700 text-zinc-800 font-medium bg-gradient-to-tl from-zinc-300 to-zinc-200 transition hover:bg-brand-800"
+                className="rounded-md text-base/6 ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-transparent hover:ring-zinc-100 h-12 px-10 py-3 bg-brand-700 text-zinc-800 font-medium bg-gradient-to-tl from-zinc-300 to-zinc-200 transition hover:bg-brand-800 cursor-pointer"
               >
                 {isSendingSms ? "Sending..." : "Send SMS Code"}
               </button>

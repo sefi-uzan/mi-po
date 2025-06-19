@@ -52,33 +52,19 @@ export const residents = pgTable(
   ]
 )
 
-// SMS Verifications table - stores SMS verification codes
-export const smsVerifications = pgTable(
-  "sms_verifications",
-  {
-    id: serial("id").primaryKey(),
-    phoneNumber: varchar("phone_number", { length: 20 }).notNull(),
-    verificationCode: varchar("verification_code", { length: 6 }).notNull(),
-    expiresAt: timestamp("expires_at").notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-  },
-  (table) => [
-    index("sms_verifications_phone_number_idx").on(table.phoneNumber),
-    index("sms_verifications_expires_at_idx").on(table.expiresAt),
-  ]
-)
-
 // Presence Status table - stores current presence status
 export const presenceStatus = pgTable(
   "presence_status",
   {
     id: serial("id").primaryKey(),
     residentId: uuid("resident_id").notNull().references(() => residents.id, { onDelete: "cascade" }),
+    buildingId: integer("building_id").notNull().references(() => buildings.id, { onDelete: "cascade" }),
     isPresent: boolean("is_present").default(false).notNull(),
     lastUpdated: timestamp("last_updated").defaultNow().notNull(),
   },
   (table) => [
     index("presence_status_resident_id_idx").on(table.residentId),
+    index("presence_status_building_id_idx").on(table.buildingId),
     index("presence_status_last_updated_idx").on(table.lastUpdated),
     unique("presence_status_resident_unique").on(table.residentId),
   ]

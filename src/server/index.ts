@@ -10,7 +10,7 @@ import { authRouter } from "./routers/auth-router"
  */
 const api = j
   .router()
-  .basePath("/")
+  .basePath("/api")
   .use(j.defaults.cors)
   .onError(j.defaults.errorHandler)
 
