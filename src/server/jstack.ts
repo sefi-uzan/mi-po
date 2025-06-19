@@ -1,11 +1,11 @@
 import { neon } from "@neondatabase/serverless"
 import { drizzle } from "drizzle-orm/neon-http"
 import { env } from "hono/adapter"
-import { verify } from "hono/jwt"
 import { getSignedCookie } from "hono/cookie"
-import { InferMiddlewareOutput, jstack } from "jstack"
-import type { JWTPayload } from "hono/utils/jwt/types"
 import { HTTPException } from "hono/http-exception"
+import { verify } from "hono/jwt"
+import type { JWTPayload } from "hono/utils/jwt/types"
+import { jstack } from "jstack"
 import { Twilio } from "twilio"
 
 type ExtendedJWTPayload = JWTPayload & {
@@ -28,7 +28,7 @@ interface Env {
 
 export const j = jstack.init<Env>()
 
-const databaseMiddleware = j.middleware(async ({ c, ctx, next }) => {
+const databaseMiddleware = j.middleware(async ({ c, next }) => {
   const { DATABASE_URL, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = env(c)
 
   const sql = neon(DATABASE_URL)

@@ -1,6 +1,5 @@
-import type { Metadata } from "next"
-import { Providers } from "../components/providers"
 import { cn } from "@/lib/utils"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Mi Po",

@@ -275,14 +275,14 @@ export const authRouter = j.router({
       else {
         return c.json({ success: false, message: "Failed to send verification code" })
       }
-    } catch (error: any) {
-      if (error.code === 60200) {
+    } catch (error: unknown) {
+      if ((error as { code?: number }).code === 60200) {
         throw new HTTPException(400, { message: "Invalid phone number format" })
-      } else if (error.code === 60203) {
+      } else if ((error as { code?: number }).code === 60203) {
         throw new HTTPException(400, { message: "Too many verification attempts. Please try again later." })
-      } else if (error.code === 60202) {
+      } else if ((error as { code?: number }).code === 60202) {
         throw new HTTPException(400, { message: "SMS delivery failed. Please check your phone number." })
-      } else if (error.code === 60410) {
+      } else if ((error as { code?: number }).code === 60410) {
         throw new HTTPException(400, { message: "Phone number temporarily blocked. Please try a different number." })
       }
       

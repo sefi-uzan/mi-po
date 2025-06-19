@@ -1,8 +1,7 @@
 import { buildings, residents } from "@/server/db/schema"
-import { desc, eq } from "drizzle-orm"
-import { z } from "zod"
-import { j, protectedProcedure, publicProcedure } from "../jstack"
+import { eq } from "drizzle-orm"
 import { HTTPException } from "hono/http-exception"
+import { j, protectedProcedure } from "../jstack"
 
 export const buildingRouter = j.router({
   getBuilding: protectedProcedure.get(async ({ c, ctx }) => {

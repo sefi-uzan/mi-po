@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import QRCode from "qrcode"
 import { toast } from "react-hot-toast"
+import Image from "next/image"
 
 const BuildingPage = () => {
     const [showInviteDialog, setShowInviteDialog] = useState(false)
@@ -164,7 +165,7 @@ const BuildingPage = () => {
                         {qrCodeDataUrl && (
                             <div className="flex flex-col items-center space-y-4">
                                 <div className="bg-white p-4 rounded-md">
-                                    <img src={qrCodeDataUrl} alt="QR Code" className="w-48 h-48" />
+                                    <Image src={qrCodeDataUrl} alt="QR Code" className="w-48 h-48" />
                                 </div>
                                 <p className="text-sm text-zinc-400 text-center">
                                     Scan this QR code to join the building

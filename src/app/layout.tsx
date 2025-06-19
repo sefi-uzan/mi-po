@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
-import { Providers } from "./components/providers"
-import { cn } from "@/lib/utils"
 import { Toaster } from "react-hot-toast"
+import { Providers } from "./components/providers"
 import "./globals.css"
 
 export const metadata: Metadata = {
