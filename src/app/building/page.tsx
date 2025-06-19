@@ -92,12 +92,14 @@ const BuildingPage = () => {
     }
 
     return (
-        <div className="container flex flex-col items-center justify-center gap-6 px-4 py-16">
-            <div className="w-full max-w-4xl backdrop-blur-lg bg-black/15 px-8 py-6 rounded-md text-zinc-100/75 space-y-6">
+        <div className="container flex flex-col items-center justify-center gap-6">
+            <div className="w-full max-w-4xl backdrop-blur-lg bg-black/15 px-6 py-6 rounded-md text-zinc-100/75 space-y-6">
                 <BuildingHeader 
                     building={building}
                     onInviteClick={handleInviteClick}
                     presenceData={presenceData}
+                    currentUserId={currentUserId}
+                    onTogglePresence={handleTogglePresence}
                 />
 
                 <div>
@@ -113,7 +115,6 @@ const BuildingPage = () => {
                                     resident={resident}
                                     currentUserId={currentUserId}
                                     presenceData={presenceData}
-                                    onTogglePresence={resident.id === currentUserId ? handleTogglePresence : undefined}
                                 />
                             ))}
                         </div>

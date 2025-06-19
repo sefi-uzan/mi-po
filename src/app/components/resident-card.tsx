@@ -14,10 +14,9 @@ interface ResidentCardProps {
   resident: Resident
   currentUserId: string
   presenceData?: Record<string, boolean>
-  onTogglePresence?: () => void
 }
 
-export const ResidentCard = ({ resident, currentUserId, presenceData, onTogglePresence }: ResidentCardProps) => {
+export const ResidentCard = ({ resident, currentUserId, presenceData }: ResidentCardProps) => {
   const isCurrentUser = resident.id === currentUserId
   const isPresent = presenceData?.[resident.id]
 
@@ -63,15 +62,6 @@ export const ResidentCard = ({ resident, currentUserId, presenceData, onTogglePr
           <p className="text-sm text-zinc-300 mt-2">
             {resident.details}
           </p>
-        )}
-
-        {isCurrentUser && onTogglePresence && (
-          <button
-            onClick={onTogglePresence}
-            className="mt-2 text-xs px-3 py-1 rounded-md bg-zinc-600 hover:bg-zinc-500 text-zinc-100 transition cursor-pointer"
-          >
-            Mark as {isPresent ? 'Away' : 'Present'}
-          </button>
         )}
       </div>
     </div>

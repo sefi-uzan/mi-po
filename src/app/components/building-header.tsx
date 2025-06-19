@@ -1,21 +1,28 @@
 'use client'
 
 import { Building } from "@/lib/types"
+import { Plus, UserCheck, UserX } from "lucide-react"
 
 interface BuildingHeaderProps {
   building: Building
   onInviteClick: () => void
   presenceData?: Record<string, boolean>
+  currentUserId?: string
+  onTogglePresence?: () => void
 }
 
 export const BuildingHeader = ({ 
   building,
   onInviteClick, 
-  presenceData = {} 
+  presenceData = {},
+  currentUserId,
+  onTogglePresence
 }: BuildingHeaderProps) => {
   const totalResidents = building.residents?.length || 0
   const presentResidents = building.residents?.filter(resident => presenceData[resident.id] === true).length || 0
   const awayResidents = building.residents?.filter(resident => presenceData[resident.id] === false).length || 0
+  
+  const isCurrentUserPresent = currentUserId ? presenceData[currentUserId] : false
 
   return (
     <div className="flex items-center justify-between">
@@ -31,12 +38,30 @@ export const BuildingHeader = ({
           })}
         </p>
         </div>
-        <button
-        onClick={onInviteClick}
-        className="cursor-pointer"
-      >
-        <span className="text-2xl font-bold">+</span>
-      </button>
+        <div className="flex items-center gap-2">
+          {currentUserId && onTogglePresence && (
+            <button
+              onClick={onTogglePresence}
+              className="rounded-md bg-zinc-800/50 border border-zinc-700 hover:bg-zinc-700/50 hover:border-zinc-600 text-zinc-300 hover:text-zinc-100 transition-all duration-200 p-2 flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-zinc-500"
+            >
+              {isCurrentUserPresent ? (
+                <UserX className="w-4 h-4" />
+              ) : (
+                <UserCheck className="w-4 h-4" />
+              )}
+              <span className="text-xs hidden sm:inline">
+                {isCurrentUserPresent ? 'Mark Away' : 'Mark Present'}
+              </span>
+            </button>
+          )}
+          <button
+            onClick={onInviteClick}
+            className="rounded-md bg-zinc-800/50 border border-zinc-700 hover:bg-zinc-700/50 hover:border-zinc-600 text-zinc-300 hover:text-zinc-100 transition-all duration-200 p-2 flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-zinc-500"
+          >
+            <Plus className="w-4 h-4" />
+            <span className="text-xs hidden sm:inline">Invite</span>
+          </button>
+        </div>
        </div>
         
         {totalResidents > 0 && (
