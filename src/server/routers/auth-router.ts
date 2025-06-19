@@ -77,7 +77,7 @@ export const authRouter = j.router({
         domain: NODE_ENV === "production" ? VERCEL_URL : undefined,
         secure: NODE_ENV === "production",
         httpOnly: true,
-        sameSite: "lax"
+        sameSite: "None"
       }
     )
 
@@ -127,7 +127,7 @@ export const authRouter = j.router({
         domain: NODE_ENV === "production" ? VERCEL_URL : undefined,
         secure: NODE_ENV === "production",
         httpOnly: true,
-        sameSite: "lax"
+        sameSite: "None"
       }
     )
 
@@ -197,7 +197,7 @@ export const authRouter = j.router({
         domain: NODE_ENV === "production" ? VERCEL_URL : undefined,
         secure: NODE_ENV === "production",
         httpOnly: true,
-        sameSite: "lax"
+        sameSite: "None"
       }
     )
 
@@ -246,7 +246,7 @@ export const authRouter = j.router({
         domain: NODE_ENV === "production" ? VERCEL_URL : undefined,
         secure: NODE_ENV === "production",
         httpOnly: true,
-        sameSite: "lax"
+        sameSite: "None"
       }
     )
 
