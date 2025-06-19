@@ -24,7 +24,7 @@ interface Env {
     TWILIO_AUTH_TOKEN: string,
     TWILIO_VERIFY_SERVICE_SID: string,
     NEXT_PUBLIC_CF_WORKERS_URL: string,
-    VERCEL_URL: string,
+    DOMAIN: string,
   }
 }
 
