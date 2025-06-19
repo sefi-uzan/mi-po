@@ -1,0 +1,36 @@
+"use client"
+
+import { useRouter } from "next/navigation"
+
+export const TypeSelection = () => {
+  const router = useRouter()
+
+  return (
+    <div className="w-full max-w-sm backdrop-blur-lg bg-black/15 px-8 py-6 rounded-md text-zinc-100/75 space-y-4">
+      <button
+        onClick={() => router.push("/auth/create")}
+        className="w-full rounded-md text-base/6 ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-transparent hover:ring-zinc-100 h-12 px-10 py-3 bg-brand-700 text-zinc-800 font-medium bg-gradient-to-tl from-zinc-300 to-zinc-200 transition hover:bg-brand-800"
+      >
+        Create a building
+      </button>
+
+      <button
+        onClick={() => router.push("/auth/join")}
+        className="w-full rounded-md text-base/6 ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-transparent hover:ring-zinc-100 h-12 px-10 py-3 bg-brand-700 text-zinc-800 font-medium bg-gradient-to-tl from-zinc-300 to-zinc-200 transition hover:bg-brand-800"
+      >
+        Join a building
+      </button>
+
+      <p className="text-center text-sm text-zinc-400 mt-4">
+        I already have a building,{" "}
+        <button
+          onClick={() => router.push("/auth/login")}
+          className="text-zinc-200 hover:text-white underline transition"
+        >
+          log in
+        </button>
+        .
+      </p>
+    </div>
+  )
+}
