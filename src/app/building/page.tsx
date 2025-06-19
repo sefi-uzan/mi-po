@@ -7,8 +7,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import QRCode from "qrcode"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
+import { useTranslations } from "next-intl"
 
 const BuildingPage = () => {
+    const t = useTranslations()
     const [showInviteDialog, setShowInviteDialog] = useState(false)
     const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>("")
     const [currentUserId, setCurrentUserId] = useState<string>("")
@@ -45,10 +47,10 @@ const BuildingPage = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["check-presence"] })
-            toast.success("Presence status updated!")
+            toast.success(t('Toast.presenceUpdated'))
         },
         onError: () => {
-            toast.error("Failed to update presence status")
+            toast.error(t('Toast.presenceUpdateFailed'))
         }
     })
 
@@ -85,7 +87,7 @@ const BuildingPage = () => {
         return (
             <div className="container flex flex-col items-center justify-center gap-6 px-4 py-16">
                 <div className="w-full max-w-4xl backdrop-blur-lg bg-black/15 px-8 py-6 rounded-md text-zinc-100/75">
-                    <p className="text-center">Loading...</p>
+                    <p className="text-center">{t('BuildingPage.loading')}</p>
                 </div>
             </div>
         )
@@ -104,7 +106,7 @@ const BuildingPage = () => {
 
                 <div>
                     <h2 className="text-xl font-semibold text-zinc-100 mb-4">
-                        Residents ({building.residents?.length || 0})
+                        {t('BuildingPage.residents', { count: building.residents?.length || 0 })}
                     </h2>
                     
                     {building.residents && building.residents.length > 0 ? (
@@ -120,7 +122,7 @@ const BuildingPage = () => {
                         </div>
                     ) : (
                         <p className="text-zinc-400 text-center py-8">
-                            No residents found. Invite people to join your building!
+                            {t('BuildingPage.noResidents')}
                         </p>
                     )}
                 </div>

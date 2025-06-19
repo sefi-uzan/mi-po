@@ -9,12 +9,14 @@ import { TextareaWithTooltip } from "./textarea-with-tooltip"
 import { useCountdown } from "../hooks/use-countdown"
 import { HTTPException } from "hono/http-exception"
 import { toast } from "react-hot-toast"
+import { useTranslations } from "next-intl"
 
 interface JoinBuildingProps {
   initialInviteCode?: string
 }
 
 export const JoinBuilding = ({ initialInviteCode = "" }: JoinBuildingProps) => {
+  const t = useTranslations()
   const [name, setName] = useState("")
   const [phoneNumber, setPhoneNumber] = useState("")
   const [code, setCode] = useState("")
@@ -64,36 +66,36 @@ export const JoinBuilding = ({ initialInviteCode = "" }: JoinBuildingProps) => {
 
   return (
     <div className="w-full max-w-sm backdrop-blur-lg bg-black/15 px-8 py-6 rounded-md text-zinc-100/75 space-y-4">
-      <h2 className="text-xl font-semibold text-center text-zinc-100">Join Building</h2>
-      <p className="text-sm text-center text-zinc-400">Enter your details to join a building</p>
+      <h2 className="text-xl font-semibold text-center text-zinc-100">{t('JoinBuilding.joinBuilding')}</h2>
+      <p className="text-sm text-center text-zinc-400">{t('JoinBuilding.joinStepDescription')}</p>
       
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <InputWithTooltip
           type="text"
-          placeholder="Your name"
+          placeholder={t('FormFields.yourName')}
           value={name}
           maxLength={20}
           onChange={(e) => setName(e.target.value)}
           required
-          tooltip="Your display name that will be shown to other residents in the building. Maximum 20 characters."
+          tooltip={t('Tooltips.yourName')}
         />
         
         <InputWithTooltip
           type="text"
-          placeholder="Building invite code"
+          placeholder={t('FormFields.buildingInviteCode')}
           value={buildingInviteCode}
           onChange={(e) => setBuildingInviteCode(e.target.value)}
           required
-          tooltip="The unique invitation code provided by the building owner. This code allows you to join the specific building."
+          tooltip={t('Tooltips.buildingInviteCode')}
         />
 
         <div className="space-y-2">
           <InputWithTooltip
             type="tel"
-            placeholder="Phone number (optional)"
+            placeholder={t('FormFields.phoneNumberOptional')}
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
-            tooltip="Providing your phone number allows for SMS verification and enhanced security. This is optional but recommended."
+            tooltip={t('Tooltips.phoneNumberJoin')}
           />
           
           {phoneNumber && !smsCodeSent && (
@@ -103,23 +105,23 @@ export const JoinBuilding = ({ initialInviteCode = "" }: JoinBuildingProps) => {
               disabled={isSendingSms}
               className="cursor-pointer w-full rounded-md text-sm ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-zinc-600 hover:ring-zinc-500 h-10 px-4 py-2 bg-transparent text-zinc-300 transition"
             >
-              {isSendingSms ? "Sending..." : "Send Verification Code"}
+              {isSendingSms ? t('JoinBuilding.sending') : t('JoinBuilding.sendVerificationCode')}
             </button>
           )}
 
           {smsCodeSent && (
             <InputWithTooltip
               type="text"
-              placeholder="Verification code"
+              placeholder={t('FormFields.verificationCode')}
               value={code}
               maxLength={6}
               onChange={(e) => setCode(e.target.value)}
-              tooltip="Enter the 6-digit verification code that was sent to your phone number via SMS."
+              tooltip={t('Tooltips.verificationCode')}
               description={
                 countdown.isActive 
-                  ? `Resend code in ${countdown.formatTime}` 
+                  ? t('JoinBuilding.resendCodeIn', { time: countdown.formatTime }) 
                   : countdown.isFinished 
-                    ? "You can request a new code" 
+                    ? t('JoinBuilding.canRequestNewCode') 
                     : undefined
               }
             />
@@ -127,10 +129,10 @@ export const JoinBuilding = ({ initialInviteCode = "" }: JoinBuildingProps) => {
         </div>
 
         <TextareaWithTooltip
-          placeholder="Additional details (optional)"
+          placeholder={t('FormFields.additionalDetailsOptional')}
           value={details}
           onChange={(e) => setDetails(e.target.value)}
-          tooltip="Any additional information about yourself that you'd like to share with other residents in the building. This field is optional."
+          tooltip={t('Tooltips.additionalDetailsJoin')}
         />
 
         <button
@@ -138,7 +140,7 @@ export const JoinBuilding = ({ initialInviteCode = "" }: JoinBuildingProps) => {
           type="submit"
           className="cursor-pointer rounded-md text-base/6 ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-transparent hover:ring-zinc-100 h-12 px-10 py-3 bg-brand-700 text-zinc-800 font-medium bg-gradient-to-tl from-zinc-300 to-zinc-200 transition hover:bg-brand-800"
         >
-          {isJoining ? "Joining..." : "Join Building"}
+          {isJoining ? t('JoinBuilding.joining') : t('JoinBuilding.joinBuilding')}
         </button>
       </form>
     </div>

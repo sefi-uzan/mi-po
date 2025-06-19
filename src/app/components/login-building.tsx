@@ -8,8 +8,10 @@ import { InputWithTooltip } from "./input-with-tooltip"
 import { useCountdown } from "../hooks/use-countdown"
 import { HTTPException } from "hono/http-exception"
 import { toast } from "react-hot-toast"
+import {useTranslations} from 'next-intl';
 
 export const LoginBuilding = () => {
+  const t = useTranslations()
   const [loginMethod, setLoginMethod] = useState<'phone' | 'name'>('phone')
   const [step, setStep] = useState<'initial' | 'code'>('initial')
   const [phoneNumber, setPhoneNumber] = useState("")
@@ -74,8 +76,8 @@ export const LoginBuilding = () => {
 
   return (
     <div className="w-full max-w-sm backdrop-blur-lg bg-black/15 px-8 py-6 rounded-md text-zinc-100/75 space-y-4">
-      <h2 className="text-xl font-semibold text-center text-zinc-100">Login to Building</h2>
-      <p className="text-sm text-center text-zinc-400">Choose your login method</p>
+      <h2 className="text-xl font-semibold text-center text-zinc-100">{t('LoginBuilding.loginToBuilding')}</h2> 
+      <p className="text-sm text-center text-zinc-400">{t('LoginBuilding.description')}</p>
       
       {/* Login Method Tabs */}
       <div className="flex gap-2 mb-6">
@@ -90,7 +92,7 @@ export const LoginBuilding = () => {
               : 'bg-transparent text-zinc-400 hover:text-zinc-300 cursor-pointer'
           }`}
         >
-          Phone Number
+          {t('Auth.phoneNumber')}
         </button>
         <button
           onClick={() => {
@@ -103,7 +105,7 @@ export const LoginBuilding = () => {
               : 'bg-transparent text-zinc-400 hover:text-zinc-300 cursor-pointer'
           }`}
         >
-          Name + Code
+          {t('Auth.nameCode')}
         </button>
       </div>
 
@@ -113,35 +115,35 @@ export const LoginBuilding = () => {
             <>
               <InputWithTooltip
                 type="tel"
-                placeholder="Phone number"
+                placeholder={t('FormFields.phoneNumber')}
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 required
-                tooltip="Enter the phone number associated with your account to receive a verification code."
+                tooltip={t('Tooltips.phoneNumberLogin')}
               />
               <button
                 disabled={isSendingSms}
                 type="submit"
                 className="rounded-md text-base/6 ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-transparent hover:ring-zinc-100 h-12 px-10 py-3 bg-brand-700 text-zinc-800 font-medium bg-gradient-to-tl from-zinc-300 to-zinc-200 transition hover:bg-brand-800 cursor-pointer"
               >
-                {isSendingSms ? "Sending..." : "Send SMS Code"}
+                {isSendingSms ? t('LoginBuilding.sending') : t('LoginBuilding.sendSmsCode')}
               </button>
             </>
           ) : (
             <>
               <InputWithTooltip
                 type="text"
-                placeholder="Verification code"
+                placeholder={t('FormFields.verificationCode')}
                 value={code}
                 maxLength={6}
                 onChange={(e) => setCode(e.target.value)}
                 required
-                tooltip="Enter the 6-digit verification code that was sent to your phone number."
+                tooltip={t('Tooltips.verificationCodeLogin')}
                 description={
                   countdown.isActive 
-                    ? `Resend code in ${countdown.formatTime}` 
+                    ? t('LoginBuilding.resendCodeIn', { time: countdown.formatTime }) 
                     : countdown.isFinished 
-                      ? "You can request a new code" 
+                      ? t('LoginBuilding.canRequestNewCode') 
                       : undefined
                 }
               />
@@ -151,14 +153,14 @@ export const LoginBuilding = () => {
                   onClick={() => setStep('initial')}
                   className="flex-1 rounded-md text-base/6 ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-zinc-600 hover:ring-zinc-500 h-12 px-4 py-3 bg-transparent text-zinc-300 transition"
                 >
-                  Back
+                  {t('LoginBuilding.back')}
                 </button>
                 <button
                   disabled={isLoggingInPhone}
                   type="submit"
                   className="flex-1 rounded-md text-base/6 ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-transparent hover:ring-zinc-100 h-12 px-4 py-3 bg-brand-700 text-zinc-800 font-medium bg-gradient-to-tl from-zinc-300 to-zinc-200 transition hover:bg-brand-800"
                 >
-                  {isLoggingInPhone ? "Logging in..." : "Login"}
+                  {isLoggingInPhone ? t('LoginBuilding.loggingIn') : t('LoginBuilding.login')}
                 </button>
               </div>
             </>
@@ -170,21 +172,21 @@ export const LoginBuilding = () => {
         <form onSubmit={handleNameSubmit} className="flex flex-col gap-4">
           <InputWithTooltip
             type="text"
-            placeholder="Your name"
+            placeholder={t('FormFields.yourName')}
             value={name}
             maxLength={20}
             onChange={(e) => setName(e.target.value)}
             required
-            tooltip="Enter your display name as it appears in the building."
+            tooltip={t('Tooltips.yourNameLogin')}
           />
           
           <InputWithTooltip
             type="text"
-            placeholder="Building invite code"
+            placeholder={t('FormFields.buildingInviteCode')}
             value={buildingInviteCode}
             onChange={(e) => setBuildingInviteCode(e.target.value)}
             required
-            tooltip="Enter your building's invite code to identify which building you belong to."
+            tooltip={t('Tooltips.buildingInviteCodeLogin')}
           />
 
           <button
@@ -192,7 +194,7 @@ export const LoginBuilding = () => {
             type="submit"
             className="rounded-md text-base/6 ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-transparent hover:ring-zinc-100 h-12 px-10 py-3 bg-brand-700 text-zinc-800 font-medium bg-gradient-to-tl from-zinc-300 to-zinc-200 transition hover:bg-brand-800"
           >
-            {isLoggingInName ? "Logging in..." : "Login"}
+            {isLoggingInName ? t('LoginBuilding.loggingIn') : t('LoginBuilding.login')}
           </button>
         </form>
       )}

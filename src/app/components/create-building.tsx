@@ -9,8 +9,10 @@ import { TextareaWithTooltip } from "./textarea-with-tooltip"
 import { useCountdown } from "../hooks/use-countdown"
 import { HTTPException } from "hono/http-exception"
 import { toast } from "react-hot-toast"
+import { useTranslations } from "next-intl"
 
 export const CreateBuilding = () => {
+  const t = useTranslations()
   const [step, setStep] = useState<'phone' | 'create'>('phone')
   const [phoneNumber, setPhoneNumber] = useState("")
   const [code, setCode] = useState("")
@@ -50,8 +52,8 @@ export const CreateBuilding = () => {
   if (step === 'phone') {
     return (
       <div className="w-full max-w-sm backdrop-blur-lg bg-black/15 px-8 py-6 rounded-md text-zinc-100/75 space-y-4">
-        <h2 className="text-xl font-semibold text-center text-zinc-100">Create Building</h2>
-        <p className="text-sm text-center text-zinc-400">Enter your phone number to get started</p>
+        <h2 className="text-xl font-semibold text-center text-zinc-100">{t('CreateBuilding.createBuilding')}</h2>
+        <p className="text-sm text-center text-zinc-400">{t('CreateBuilding.createStepDescription')}</p>
         
         <form
           onSubmit={(e) => {
@@ -62,18 +64,18 @@ export const CreateBuilding = () => {
         >
           <InputWithTooltip
             type="tel"
-            placeholder="Phone number"
+            placeholder={t('FormFields.phoneNumber')}
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
             required
-            tooltip="Enter your phone number to receive a verification code via SMS. This will be used to verify your identity as the building owner."
+            tooltip={t('Tooltips.phoneNumberCreate')}
           />
           <button
             disabled={isSendingSms}
             type="submit"
             className="cursor-pointer rounded-md text-base/6 ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-transparent hover:ring-zinc-100 h-12 px-10 py-3 bg-brand-700 text-zinc-800 font-medium bg-gradient-to-tl from-zinc-300 to-zinc-200 transition hover:bg-brand-800"
           >
-            {isSendingSms ? "Sending..." : "Send SMS Code"}
+            {isSendingSms ? t('CreateBuilding.sending') : t('CreateBuilding.sendSmsCode')}
           </button>
         </form>
       </div>
@@ -82,8 +84,8 @@ export const CreateBuilding = () => {
 
   return (
     <div className="w-full max-w-sm backdrop-blur-lg bg-black/15 px-8 py-6 rounded-md text-zinc-100/75 space-y-4">
-      <h2 className="text-xl font-semibold text-center text-zinc-100">Create Building</h2>
-      <p className="text-sm text-center text-zinc-400">Enter your details to create your building</p>
+      <h2 className="text-xl font-semibold text-center text-zinc-100">{t('CreateBuilding.createBuilding')}</h2>
+      <p className="text-sm text-center text-zinc-400">{t('CreateBuilding.createStepDescription')}</p>
       
       <form
         onSubmit={(e) => {
@@ -94,43 +96,43 @@ export const CreateBuilding = () => {
       >
         <InputWithTooltip
           type="text"
-          placeholder="Verification code"
+          placeholder={t('FormFields.verificationCode')}
           value={code}
           maxLength={6}
           onChange={(e) => setCode(e.target.value)}
           required
-          tooltip="Enter the 6-digit verification code that was sent to your phone number via SMS."
+          tooltip={t('Tooltips.verificationCode')}
           description={
             countdown.isActive 
-              ? `Resend code in ${countdown.formatTime}` 
+              ? t('CreateBuilding.resendCodeIn', { time: countdown.formatTime }) 
               : countdown.isFinished 
-                ? "You can request a new code" 
+                ? t('CreateBuilding.canRequestNewCode') 
                 : undefined
           }
         />
         <InputWithTooltip
           type="text"
-          placeholder="Your name"
+          placeholder={t('FormFields.yourName')}
           value={name}
           maxLength={20}
           onChange={(e) => setName(e.target.value)}
           required
-          tooltip="Your display name that will be shown to other residents in the building. Maximum 20 characters."
+          tooltip={t('Tooltips.yourName')}
         />
         <InputWithTooltip
           type="text"
-          placeholder="Building name"
+          placeholder={t('FormFields.buildingName')}
           value={buildingName}
           maxLength={20}
           onChange={(e) => setBuildingName(e.target.value)}
           required
-          tooltip="The name of your building or property. This will be used to identify your building to other residents. Maximum 20 characters."
+          tooltip={t('Tooltips.buildingName')}
         />
         <TextareaWithTooltip
-          placeholder="Additional details (optional)"
+          placeholder={t('FormFields.additionalDetailsOptional')}
           value={details}
           onChange={(e) => setDetails(e.target.value)}
-          tooltip="Any additional information about yourself or the building that you'd like to share with other residents. This field is optional."
+          tooltip={t('Tooltips.additionalDetailsJoin')}
         />
         <div className="flex gap-2">
           <button
@@ -138,14 +140,14 @@ export const CreateBuilding = () => {
             onClick={() => setStep('phone')}
             className="cursor-pointer flex-1 rounded-md text-base/6 ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-zinc-600 hover:ring-zinc-500 h-12 px-4 py-3 bg-transparent text-zinc-300 transition"
           >
-            Back
+            {t('CreateBuilding.back')}  
           </button>
           <button
             disabled={isCreating}
             type="submit"
             className="cursor-pointer flex-1 rounded-md text-base/6 ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-transparent hover:ring-zinc-100 h-12 px-4 py-3 bg-brand-700 text-zinc-800 font-medium bg-gradient-to-tl from-zinc-300 to-zinc-200 transition hover:bg-brand-800"
           >
-            {isCreating ? "Creating..." : "Create Building"}
+            {isCreating ? t('CreateBuilding.creating') : t('CreateBuilding.createBuilding')}
           </button>
         </div>
       </form>

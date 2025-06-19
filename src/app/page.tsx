@@ -1,8 +1,12 @@
 import { cn } from "@/lib/utils"
 import { TypeSelection } from "./components/type-selection"
+import { LocaleSelector } from "./components/locale-selector"
 import Image from "next/image"
+import {getTranslations, getLocale} from 'next-intl/server';
 
 export default async function Home() {
+  const t = await getTranslations('App');
+  const locale = await getLocale();
     return (    
     <div className="container flex flex-col items-center justify-center gap-6 px-4 py-16">
     <h1
@@ -13,13 +17,16 @@ export default async function Home() {
         "from-white to-gray-50"
       )}
     >
-      <Image src="/logo.png" alt="Mi Po" width={100} height={100} />
-      <span className="text-2xl font-bold">Mi Po</span>
+      <Image src="/logo.png" alt={t('title')} width={100} height={100} />
+      <span className="text-2xl font-bold">{t('title')}</span>
     </h1>
 
     <p className="text-[#ececf399] text-lg/7 md:text-xl/8 text-pretty sm:text-wrap sm:text-center text-center mb-8">
-      An emergency situation building resident system
+      {t('description')}
     </p>
+    
+    <LocaleSelector initialLocale={locale} />
+    
     <TypeSelection />
     </div>
 )

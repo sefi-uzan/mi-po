@@ -1,10 +1,12 @@
 import { cn } from "@/lib/utils"
+import { getTranslations } from "next-intl/server";
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const t = await getTranslations();
   return (
             <div className="container flex flex-col items-center justify-center gap-6 px-4 py-16">
               <h1
@@ -15,12 +17,12 @@ export default function AuthLayout({
                   "from-white to-gray-50"
                 )}
               >
-                <span>Mi Po</span>
+                <span>{t('App.title')}</span>
               </h1>
               <p className="text-[#ececf399] text-lg/7 md:text-xl/8 text-pretty sm:text-wrap sm:text-center text-center mb-8">
-                You can join a building or create a new one.
+                {t('Auth.description')}
                 <br />
-                You can also log in to your existing building.
+                {t('Auth.existingBuilding')}
               </p>
               {children}
             </div>

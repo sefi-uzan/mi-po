@@ -1,0 +1,110 @@
+{
+    "App": {
+        "title": "מי פה",
+        "description": "מערכת דיירים לבניין במצבי חירום"
+    },
+    "Auth": {
+        "description": "אתה יכול להצטרף לבניין או ליצור חדש.",
+        "existingBuilding": "אתה יכול גם להתחבר לבניין הקיים שלך.",
+        "phoneNumber": "מספר טלפון",
+        "nameCode": "שם + קוד"
+    },
+    "TypeSelection": {
+        "createBuilding": "צור בניין",
+        "joinBuilding": "הצטרף לבניין",
+        "alreadyHaveBuilding": "יש לי כבר בניין,",
+        "logIn": "התחבר"
+    },
+    "CreateBuilding": {
+        "phoneStepDescription": "הזן את מספר הטלפון שלך כדי להתחיל",
+        "createStepDescription": "הזן את הפרטים שלך כדי ליצור את הבניין שלך",
+        "sendSmsCode": "שלח קוד SMS",
+        "sending": "שולח...",
+        "createBuilding": "צור בניין",
+        "creating": "יוצר...",
+        "back": "חזור",
+        "resendCodeIn": "שלח קוד שוב בעוד {time}",
+        "canRequestNewCode": "אתה יכול לבקש קוד חדש"
+    },
+    "JoinBuilding": {
+        "joinStepDescription": "הזן את הפרטים שלך כדי להצטרף לבניין",
+        "joinBuilding": "הצטרף לבניין",
+        "joining": "מצטרף...",
+        "sendVerificationCode": "שלח קוד אימות",
+        "sending": "שולח...",
+        "resendCodeIn": "שלח קוד שוב בעוד {time}",
+        "canRequestNewCode": "אתה יכול לבקש קוד חדש"
+    },
+    "LoginBuilding": {
+        "loginToBuilding": "התחבר לבניין",
+        "description": "בחר את שיטת ההתחברות שלך",
+        "sendSmsCode": "שלח קוד SMS",
+        "sending": "שולח...",
+        "login": "התחבר",
+        "loggingIn": "מתחבר...",
+        "back": "חזור",
+        "resendCodeIn": "שלח קוד שוב בעוד {time}",
+        "canRequestNewCode": "אתה יכול לבקש קוד חדש"
+    },
+    "BuildingPage": {
+        "loading": "טוען...",
+        "residents": "דיירים ({count})",
+        "noResidents": "לא נמצאו דיירים. הזמן אנשים להצטרף לבניין שלך!"
+    },
+    "BuildingHeader": {
+        "created": "נוצר",
+        "invite": "הזמן",
+        "markPresent": "סמן כנוכח",
+        "markAway": "סמן כלא נוכח",
+        "total": "סה״כ",
+        "present": "נוכחים",
+        "away": "נעדרים"
+    },
+    "ResidentCard": {
+        "you": "(אתה)",
+        "buildingOwner": "בעל הבניין",
+        "joined": "הצטרף",
+        "present": "נוכח",
+        "away": "נעדר",
+        "verified": "✓"
+    },
+    "InviteDialog": {
+        "title": "הזמן לבניין",
+        "qrCodeDescription": "סרוק את הקוד כדי להצטרף לבניין",
+        "inviteLink": "הזמנה:",
+        "inviteCode": "קוד:",
+        "copy": "העתק",
+        "shareCodeDescription": "שתף את הקוד הזה עם דיירים בבניין שלך",
+        "qrCodeAlt": "קוד QR"
+    },
+    "FormFields": {
+        "phoneNumber": "מספר טלפון",
+        "phoneNumberOptional": "מספר טלפון (לא חייב)",
+        "verificationCode": "קוד אימות",
+        "yourName": "השם שלך",
+        "buildingName": "שם לבניין",
+        "buildingInviteCode": "קוד הזמנה לבניין",
+        "additionalDetails": "פרטים נוספים (לא חייב)",
+        "additionalDetailsOptional": "פרטים נוספים (לא חייב)"
+    },
+    "Tooltips": {
+        "phoneNumberCreate": "הזן את מספר הטלפון שלך על מנת לאמת אותו באמצעות אסמס (חובה כדי ליצור בניין)",
+        "phoneNumberLogin": "הזן את מספר הטלפון המשויך לחשבון שלך כדי לקבל קוד אימות.",
+        "phoneNumberJoin": "שיתוף מספר הטלפון מאפשר אבטחה מוגברת באמצעות אסמס, וגם יעזור במקרה של אזעקה אם יחפשו אותך במקלט",
+        "verificationCode": "הזן את קוד האימות בן 6 הספרות שנשלח למספר הטלפון שלך באמצעות SMS.",
+        "verificationCodeLogin": "הזן את קוד האימות בן 6 הספרות שנשלח למספר הטלפון שלך.",
+        "yourName": "השם שלך שיוצג לדיירים אחרים בבניין",
+        "yourNameLogin": "הזן את השם שלך כפי שנרשמת איתו לבניין",
+        "buildingName": "תן לבניין שלך שם, מקסימום 20 תווים",
+        "buildingInviteCode": "קוד ההזמנה לבניין שקיבלת מאחד הדיירים",
+        "buildingInviteCodeLogin": "קוד ההזמנה לבניין שקיבלת מאחד הדיירים כשהצרטפת לבניין",
+        "additionalDetailsCreate": "מספר דירה, או מידע נוסף שחשוב שאחרים ידעו בשעת אזעקה",
+        "additionalDetailsJoin": "מספר דירה, או מידע נוסף שחשוב שאחרים ידעו בשעת אזעקה"
+    },
+    "Toast": {
+        "presenceUpdated": "סטטוס עודכן!",
+        "presenceUpdateFailed": "עדכון סטטוס נכשל",
+        "inviteLinkCopied": "קישור הועתק",
+        "inviteCodeCopied": "קוד הועתק"
+    }
+}

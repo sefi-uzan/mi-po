@@ -1,5 +1,7 @@
 'use client'
 
+import { useTranslations } from "next-intl"
+
 interface Resident {
   id: string
   displayName: string
@@ -17,6 +19,7 @@ interface ResidentCardProps {
 }
 
 export const ResidentCard = ({ resident, currentUserId, presenceData }: ResidentCardProps) => {
+  const t = useTranslations()
   const isCurrentUser = resident.id === currentUserId
   const isPresent = presenceData?.[resident.id]
 
@@ -27,20 +30,20 @@ export const ResidentCard = ({ resident, currentUserId, presenceData }: Resident
         <div className="flex items-center gap-2">
           <div className={`w-3 h-3 rounded-full ${
             isPresent ? 'bg-green-400' : 'bg-gray-400'
-          }`} title={isPresent ? 'Present' : 'Away'} />
+          }`} title={isPresent ? t('ResidentCard.present') : t('ResidentCard.away')} />
           <h3 className="font-medium text-zinc-100">
             {resident.displayName}
-            {isCurrentUser && <span className="text-zinc-400 ml-2">(You)</span>}
+            {isCurrentUser && <span className="text-zinc-400 ml-2"> {t('ResidentCard.you')}</span>}
           </h3>
 
         </div>
         <div className="text-xs text-zinc-500">
         {resident.type === 'owner' && (
-            <span className="text-yellow-400 text-lg" title="Building Owner">
+            <span className="text-yellow-400 text-lg" title={t('ResidentCard.buildingOwner')}>
               👑
             </span>
           )}
-        Joined {new Date(resident.joinedAt).toLocaleDateString()}
+        {t('ResidentCard.joined')} {new Date(resident.joinedAt).toLocaleDateString()}
       </div>
         </div>
         
@@ -53,7 +56,7 @@ export const ResidentCard = ({ resident, currentUserId, presenceData }: Resident
               {resident.phoneNumber}
             </a>
             {resident.phoneVerified && (
-              <span className="ml-2 text-green-400 text-xs">✓ Verified</span>
+              <span className="ml-2 text-green-400 text-xs">{t('ResidentCard.verified')}</span>
             )}
           </p>
         )}
