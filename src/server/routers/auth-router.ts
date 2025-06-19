@@ -14,7 +14,7 @@ export const authRouter = j.router({
   createOwner: publicProcedure
   .input(z.object({ phoneNumber: z.string().min(1), code: z.string().length(6), name: z.string().min(1).max(20), details: z.string().optional(), buildingName: z.string().min(1).max(20) }))
   .post(async ({ c, ctx, input }) => {
-    const { TWILIO_VERIFY_SERVICE_SID, JWT_SECRET, NODE_ENV, JWT_EXPIRATION_TIME } = env(c)
+    const { TWILIO_VERIFY_SERVICE_SID, JWT_SECRET, NODE_ENV, JWT_EXPIRATION_TIME, VERCEL_URL } = env(c)
     const { db, twilio } = ctx
     const { phoneNumber, code, name } = input
 
@@ -74,6 +74,7 @@ export const authRouter = j.router({
     await setSignedCookie(c, "token", token, JWT_SECRET,
       {
         path: "/",
+        domain: NODE_ENV === "production" ? VERCEL_URL : undefined,
         secure: NODE_ENV === "production",
         httpOnly: true,
         sameSite: "lax"
@@ -85,7 +86,7 @@ export const authRouter = j.router({
   loginPhone: publicProcedure
   .input(z.object({ phoneNumber: z.string().min(1), code: z.string().length(6) }))
   .post(async ({ c, ctx, input }) => {
-    const { TWILIO_VERIFY_SERVICE_SID, JWT_SECRET, NODE_ENV, JWT_EXPIRATION_TIME } = env(c)
+    const { TWILIO_VERIFY_SERVICE_SID, JWT_SECRET, NODE_ENV, JWT_EXPIRATION_TIME, VERCEL_URL } = env(c)
     const { db, twilio } = ctx
     const { phoneNumber, code } = input
 
@@ -123,6 +124,7 @@ export const authRouter = j.router({
     await setSignedCookie(c, "token", token, JWT_SECRET,
       {
         path: "/",
+        domain: NODE_ENV === "production" ? VERCEL_URL : undefined,
         secure: NODE_ENV === "production",
         httpOnly: true,
         sameSite: "lax"
@@ -135,7 +137,7 @@ export const authRouter = j.router({
   .input(z.object({ phoneNumber: z.string().min(1).optional(), code: z.string().length(6).optional(), name: z.string().min(1).max(20), details: z.string().optional(), buildingInviteCode: z.string().min(1) }))
   .post(async ({ c, ctx, input }) => {
     const { db, twilio } = ctx
-    const { TWILIO_VERIFY_SERVICE_SID } = env(c)
+    const { TWILIO_VERIFY_SERVICE_SID, JWT_SECRET, NODE_ENV, JWT_EXPIRATION_TIME, VERCEL_URL } = env(c)
     const { phoneNumber, code, name, details, buildingInviteCode } = input
 
     const building = await db.select().from(buildings)
@@ -182,8 +184,6 @@ export const authRouter = j.router({
       throw new HTTPException(500, { message: "Failed to create resident" })
     }
 
-    const { JWT_SECRET, NODE_ENV, JWT_EXPIRATION_TIME } = env(c)
-
     const token = await sign({
       id: newResident[0].id,
       role: "resident",
@@ -194,6 +194,7 @@ export const authRouter = j.router({
     await setSignedCookie(c, "token", token, JWT_SECRET,
       {
         path: "/",
+        domain: NODE_ENV === "production" ? VERCEL_URL : undefined,
         secure: NODE_ENV === "production",
         httpOnly: true,
         sameSite: "lax"
@@ -206,7 +207,7 @@ export const authRouter = j.router({
   .input(z.object({ name: z.string().min(1).max(20), buildingInviteCode: z.string().min(1) }))
   .post(async ({ c, ctx, input }) => {
     const { db} = ctx
-    const { JWT_SECRET, NODE_ENV, JWT_EXPIRATION_TIME } = env(c)
+    const { JWT_SECRET, NODE_ENV, JWT_EXPIRATION_TIME, VERCEL_URL } = env(c)
     const { name, buildingInviteCode } = input
 
     const building = await db.select().from(buildings)
@@ -242,6 +243,7 @@ export const authRouter = j.router({
     await setSignedCookie(c, "token", token, JWT_SECRET,
       {
         path: "/",
+        domain: NODE_ENV === "production" ? VERCEL_URL : undefined,
         secure: NODE_ENV === "production",
         httpOnly: true,
         sameSite: "lax"
