@@ -8,9 +8,12 @@ import QRCode from "qrcode"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
 import { useTranslations } from "next-intl"
+import { LocaleSelector } from "../components/locale-selector"
+import { useLocale } from "next-intl"
 
 const BuildingPage = () => {
     const t = useTranslations()
+    const locale = useLocale();
     const [showInviteDialog, setShowInviteDialog] = useState(false)
     const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>("")
     const [currentUserId, setCurrentUserId] = useState<string>("")
@@ -95,6 +98,7 @@ const BuildingPage = () => {
 
     return (
         <div className="container flex flex-col items-center justify-center gap-6">
+            <LocaleSelector initialLocale={locale} />
             <div className="w-full max-w-4xl backdrop-blur-lg bg-black/15 px-6 py-6 rounded-md text-zinc-100/75 space-y-6">
                 <BuildingHeader 
                     building={building}

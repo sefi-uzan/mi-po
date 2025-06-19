@@ -25,7 +25,7 @@ export const JoinBuilding = ({ initialInviteCode = "" }: JoinBuildingProps) => {
   const [smsCodeSent, setSmsCodeSent] = useState(false)
   const router = useRouter()
   
-  const countdown = useCountdown(60) // 1 minute countdown
+  const countdown = useCountdown(600) // 1 minute countdown
 
   const { mutate: sendSms, isPending: isSendingSms } = useMutation({
     mutationFn: async (data: { phoneNumber: string }) => {

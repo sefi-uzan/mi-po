@@ -21,7 +21,7 @@ export const CreateBuilding = () => {
   const [details, setDetails] = useState("")
   const router = useRouter()
   
-  const countdown = useCountdown(60) // 1 minute countdown
+  const countdown = useCountdown(600) // 1 minute countdown
 
   const { mutate: sendSms, isPending: isSendingSms } = useMutation({
     mutationFn: async (data: { phoneNumber: string }) => {
@@ -53,7 +53,7 @@ export const CreateBuilding = () => {
     return (
       <div className="w-full max-w-sm backdrop-blur-lg bg-black/15 px-8 py-6 rounded-md text-zinc-100/75 space-y-4">
         <h2 className="text-xl font-semibold text-center text-zinc-100">{t('CreateBuilding.createBuilding')}</h2>
-        <p className="text-sm text-center text-zinc-400">{t('CreateBuilding.createStepDescription')}</p>
+       
         
         <form
           onSubmit={(e) => {
@@ -85,7 +85,7 @@ export const CreateBuilding = () => {
   return (
     <div className="w-full max-w-sm backdrop-blur-lg bg-black/15 px-8 py-6 rounded-md text-zinc-100/75 space-y-4">
       <h2 className="text-xl font-semibold text-center text-zinc-100">{t('CreateBuilding.createBuilding')}</h2>
-      <p className="text-sm text-center text-zinc-400">{t('CreateBuilding.createStepDescription')}</p>
+
       
       <form
         onSubmit={(e) => {

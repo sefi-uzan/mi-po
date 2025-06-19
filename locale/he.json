@@ -4,20 +4,19 @@
         "description": "מערכת דיירים לבניין במצבי חירום"
     },
     "Auth": {
-        "description": "אתה יכול להצטרף לבניין או ליצור חדש.",
-        "existingBuilding": "אתה יכול גם להתחבר לבניין הקיים שלך.",
+        "description": "הצטרף לבניין קיים או צור בניין חדש",
+        "existingBuilding": "אם בטעות התנתקת אתה יכול להתחבר שוב לבניין שלך",
         "phoneNumber": "מספר טלפון",
         "nameCode": "שם + קוד"
     },
     "TypeSelection": {
         "createBuilding": "צור בניין",
         "joinBuilding": "הצטרף לבניין",
-        "alreadyHaveBuilding": "יש לי כבר בניין,",
+        "alreadyHaveBuilding": "יש לי כבר בניין, ",
         "logIn": "התחבר"
     },
     "CreateBuilding": {
         "phoneStepDescription": "הזן את מספר הטלפון שלך כדי להתחיל",
-        "createStepDescription": "הזן את הפרטים שלך כדי ליצור את הבניין שלך",
         "sendSmsCode": "שלח קוד SMS",
         "sending": "שולח...",
         "createBuilding": "צור בניין",

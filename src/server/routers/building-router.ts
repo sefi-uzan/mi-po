@@ -9,7 +9,6 @@ export const buildingRouter = j.router({
     const resident = await db.select().from(residents)
       .where(eq(residents.id, user.id))
       .limit(1)
-    console.log(resident)
     if (!resident[0]) {
       throw new HTTPException(404, { message: "Resident not found" })
     }

@@ -4,20 +4,19 @@
         "description": "An emergency situation building resident system"
     },
     "Auth": {
-        "description": "You can join a building or create a new one.",
-        "existingBuilding": "You can also log in to your existing building.",
+        "description": "Join a building or create a new one,",
+        "existingBuilding": "If you disconnected by mistake you can log in to your existing building",
         "phoneNumber": "Phone Number",
         "nameCode": "Name + Code"
     },
     "TypeSelection": {
         "createBuilding": "Create a building",
         "joinBuilding": "Join a building",
-        "alreadyHaveBuilding": "I already have a building,",
+        "alreadyHaveBuilding": "I already have a building, ",
         "logIn": "log in"
     },
     "CreateBuilding": {
         "phoneStepDescription": "Enter your phone number to get started",
-        "createStepDescription": "Enter your details to create your building",
         "sendSmsCode": "Send SMS Code",
         "sending": "Sending...",
         "createBuilding": "Create Building",
@@ -89,22 +88,22 @@
     },
     "Tooltips": {
         "phoneNumberCreate": "Enter your phone number to receive a verification code via SMS. This will be used to verify your identity as the building owner.",
-        "phoneNumberLogin": "Enter the phone number associated with your account to receive a verification code.",
-        "phoneNumberJoin": "Providing your phone number allows for SMS verification and enhanced security. This is optional but recommended.",
-        "verificationCode": "Enter the 6-digit verification code that was sent to your phone number via SMS.",
-        "verificationCodeLogin": "Enter the 6-digit verification code that was sent to your phone number.",
-        "yourName": "Your display name that will be shown to other residents in the building. Maximum 20 characters.",
-        "yourNameLogin": "Enter your display name as it appears in the building.",
-        "buildingName": "The name of your building or property. This will be used to identify your building to other residents. Maximum 20 characters.",
-        "buildingInviteCode": "The unique invitation code provided by the building owner. This code allows you to join the specific building.",
-        "buildingInviteCodeLogin": "Enter your building's invite code to identify which building you belong to.",
-        "additionalDetailsCreate": "Any additional information about yourself or the building that you'd like to share with other residents. This field is optional.",
-        "additionalDetailsJoin": "Any additional information about yourself that you'd like to share with other residents in the building. This field is optional."
+        "phoneNumberLogin": "Enter the phone number associated with your account to receive a verification code",
+        "phoneNumberJoin": "Providing your phone number allows for SMS verification and enhanced security. This is optional but recommended",
+        "verificationCode": "Enter the 6-digit verification code that was sent to your phone number via SMS",
+        "verificationCodeLogin": "Enter the 6-digit verification code that was sent to your phone number",
+        "yourName": "Your display name that will be shown to other residents in the building. Maximum 20 characters",
+        "yourNameLogin": "Enter your display name as it appears in the building",
+        "buildingName": "The name of your building or property. This will be used to identify your building to other residents. Maximum 20 characters",
+        "buildingInviteCode": "The unique invitation code provided by the building owner. This code allows you to join the specific building",
+        "buildingInviteCodeLogin": "Enter your building's invite code to identify which building you belong to",
+        "additionalDetailsCreate": "Any additional information about yourself or the building that you'd like to share with other residents. This field is optional",
+        "additionalDetailsJoin": "Any additional information about yourself that you'd like to share with other residents in the building. This field is optional"
     },
     "Toast": {
-        "presenceUpdated": "Presence status updated!",
-        "presenceUpdateFailed": "Failed to update presence status",
-        "inviteLinkCopied": "Invite link copied to clipboard!",
-        "inviteCodeCopied": "Invite code copied to clipboard!"
+        "presenceUpdated": "status updated!",
+        "presenceUpdateFailed": "Failed to update status",
+        "inviteLinkCopied": "Invite link copied",
+        "inviteCodeCopied": "Invite code copied"
     }
 }
