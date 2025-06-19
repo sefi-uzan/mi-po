@@ -33,9 +33,9 @@ export const BuildingHeader = ({
         </div>
         <button
         onClick={onInviteClick}
-        className="rounded-md bg-zinc-800/50 border border-zinc-700 hover:bg-zinc-700/50 hover:border-zinc-600 text-zinc-300 hover:text-zinc-100 transition-all duration-200 px-1 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-zinc-500"
+        className="cursor-pointer"
       >
-        <span className="text-lg">+</span>
+        <span className="text-2xl font-bold">+</span>
       </button>
        </div>
         
