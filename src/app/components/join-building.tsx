@@ -101,7 +101,7 @@ export const JoinBuilding = ({ initialInviteCode = "" }: JoinBuildingProps) => {
               type="button"
               onClick={() => sendSms({ phoneNumber })}
               disabled={isSendingSms}
-              className="w-full rounded-md text-sm ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-zinc-600 hover:ring-zinc-500 h-10 px-4 py-2 bg-transparent text-zinc-300 transition text-sm"
+              className="w-full rounded-md text-sm ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-zinc-600 hover:ring-zinc-500 h-10 px-4 py-2 bg-transparent text-zinc-300 transition"
             >
               {isSendingSms ? "Sending..." : "Send Verification Code"}
             </button>
