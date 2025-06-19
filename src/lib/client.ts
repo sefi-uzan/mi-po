@@ -12,7 +12,7 @@ export const client = createClient<AppRouter>({
 function getBaseUrl() {
   // In production, use the production worker
   if (process.env.NODE_ENV === "production") {
-    console.log("production")
+    console.log("production", process.env.CF_WORKERS_URL)
     return process.env.CF_WORKERS_URL
   }
  
