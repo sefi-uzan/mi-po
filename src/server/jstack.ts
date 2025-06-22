@@ -5,12 +5,10 @@ import { getSignedCookie } from "hono/cookie"
 import { HTTPException } from "hono/http-exception"
 import { verify } from "hono/jwt"
 import type { JWTPayload } from "hono/utils/jwt/types"
-import { jstack } from "jstack"
-import { Twilio } from "twilio"
+import { InferMiddlewareOutput, jstack } from "jstack"
 
 type ExtendedJWTPayload = JWTPayload & {
   id: string
-  role: string
 }
 
 interface Env {
@@ -31,14 +29,16 @@ interface Env {
 export const j = jstack.init<Env>()
 
 const databaseMiddleware = j.middleware(async ({ c, next }) => {
-  const { DATABASE_URL, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = env(c)
+  const { DATABASE_URL } = env(c)
 
   const sql = neon(DATABASE_URL)
   const db = drizzle(sql)
-  const twilio = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
-  return await next({ db, twilio })
+  return await next({ db })
 })
+
+export type DatabaseMiddlewareOutput = InferMiddlewareOutput<typeof databaseMiddleware>
+export type Database = DatabaseMiddlewareOutput['db']
 
 
 const authMiddleware = j.middleware(async ({ c, next }) => {
@@ -47,13 +47,13 @@ const authMiddleware = j.middleware(async ({ c, next }) => {
   if (!token) {
     throw new HTTPException(401, { message: "Unauthorized" })
   }
-
+  
   const decoded = await verify(token, JWT_SECRET) as ExtendedJWTPayload
-  if (!decoded.id || !decoded.role) {
+  if (!decoded.id) {
    throw new HTTPException(401, { message: "Unauthorized" })
   }
 
-  return await next({user: {id: decoded.id, role: decoded.role}})
+  return await next({user: {id: decoded.id}})
 })
 
 

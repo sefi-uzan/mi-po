@@ -22,7 +22,7 @@ export default async function AuthLayout({
               <p className="text-[#ececf399] text-lg/7 md:text-xl/8 text-pretty sm:text-wrap sm:text-center text-center mb-8">
                 {t('Auth.description')}
                 <br />
-                {t('Auth.existingBuilding')}
+                {t('Auth.existingGroup')}
               </p>
               {children}
             </div>

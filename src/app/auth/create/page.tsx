@@ -1,10 +1,10 @@
 'use client'
-import { CreateBuilding } from "@/app/components/create-building"
+import { CreateUser } from "@/app/components/create-user"
 
-const CreateBuildingPage = () => {
+const CreateUserPage = () => {
   return (
-   <CreateBuilding />
+   <CreateUser />
   )
 }
 
-export default CreateBuildingPage
+export default CreateUserPage

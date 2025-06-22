@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1750276858651,
-      "tag": "0000_bored_zarda",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1750327087815,
-      "tag": "0001_steep_the_executioner",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1750328806404,
-      "tag": "0002_bitter_aaron_stack",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1750344446296,
-      "tag": "0003_bright_patch",
+      "when": 1750449865283,
+      "tag": "0000_demonic_clint_barton",
       "breakpoints": true
     }
   ]

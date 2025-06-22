@@ -1,10 +1,10 @@
 'use client'
-import { LoginBuilding } from "@/app/components/login-building"
+import { LoginUser } from "@/app/components/login-user"
 
-const LoginBuildingPage = () => {
+const LoginUserPage = () => {
   return (
-   <LoginBuilding />
+   <LoginUser />
   )
 }
 
-export default LoginBuildingPage 
+export default LoginUserPage 

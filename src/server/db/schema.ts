@@ -1,98 +1,56 @@
-import { 
-  pgTable, 
-  serial, 
-  text, 
-  timestamp, 
-  index, 
-  boolean, 
-  integer,
-  varchar,
-  unique,
-  uuid,
-  pgEnum
-} from "drizzle-orm/pg-core"
-import { relations } from "drizzle-orm"
+import { pgTable, uuid, varchar, text, boolean, timestamp, pgEnum } from "drizzle-orm/pg-core"
 
-export const residentTypeEnum = pgEnum('resident_type', ['resident', 'owner'])
+// Enums
+export const groupTypeEnum = pgEnum('group_type', ['building', 'family'])
+export const memberRoleEnum = pgEnum('member_role', ['admin', 'member'])
+export const presenceStatusEnum = pgEnum('presence_status', ['safe', 'in_shelter', 'need_help', 'unknown'])
 
-// Buildings table - stores building information
-export const buildings = pgTable(
-  "buildings",
-  {
-    id: serial("id").primaryKey(),
-    name: text("name").notNull(),
-    inviteCode: varchar("invite_code", { length: 10 }).notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().notNull(),
-  },
-  (table) => [
-    unique("buildings_invite_code_unique").on(table.inviteCode),
-  ]
-)
+// Users table
+export const users = pgTable('users', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  phone: varchar('phone', { length: 20 }).notNull().unique(),
+  displayName: varchar('display_name', { length: 10 }).notNull(),
+  isVerified: boolean('is_verified').default(false),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow()
+})
 
-// Residents table - stores resident information
-export const residents = pgTable(
-  "residents",
-  {
-    id: uuid("id").defaultRandom().primaryKey(),
-    buildingId: integer("building_id").notNull().references(() => buildings.id, { onDelete: "cascade" }),
-    type: residentTypeEnum("type").default("resident").notNull(),
-    displayName: text("display_name").notNull(),
-    phoneNumber: varchar("phone_number", { length: 20 }),
-    phoneVerified: boolean("phone_verified").default(false).notNull(),
-    details: text("details"),
-    joinedAt: timestamp("joined_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().notNull(),
-  },
-  (table) => [
-    index("residents_building_id_idx").on(table.buildingId),
-    index("residents_phone_number_idx").on(table.phoneNumber),
-    index("residents_type_idx").on(table.type),
-  ]
-)
+// Groups table
+export const groups = pgTable('groups', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  name: varchar('name', { length: 255 }).notNull(),
+  type: groupTypeEnum('type').notNull(),
+  inviteCode: varchar('invite_code', { length: 10 }).notNull().unique(),
+  createdBy: uuid('created_by').references(() => users.id),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow()
+})
 
-// Presence Status table - stores current presence status
-export const presenceStatus = pgTable(
-  "presence_status",
-  {
-    id: serial("id").primaryKey(),
-    residentId: uuid("resident_id").notNull().references(() => residents.id, { onDelete: "cascade" }),
-    buildingId: integer("building_id").notNull().references(() => buildings.id, { onDelete: "cascade" }),
-    isPresent: boolean("is_present").default(false).notNull(),
-    lastUpdated: timestamp("last_updated").defaultNow().notNull(),
-  },
-  (table) => [
-    index("presence_status_resident_id_idx").on(table.residentId),
-    index("presence_status_building_id_idx").on(table.buildingId),
-    index("presence_status_last_updated_idx").on(table.lastUpdated),
-    unique("presence_status_resident_unique").on(table.residentId),
-  ]
-)
+// Group members table
+export const groupMembers = pgTable('group_members', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }),
+  groupId: uuid('group_id').references(() => groups.id, { onDelete: 'cascade' }),
+  role: memberRoleEnum('role').default('member'),
+  joinedAt: timestamp('joined_at').defaultNow()
+})
 
-// Relations
-export const buildingsRelations = relations(buildings, ({ many, one }) => ({
-  residents: many(residents),
-  owner: one(residents, {
-    fields: [buildings.id],
-    references: [residents.buildingId],
-    relationName: "buildingOwner"
-  }),
-}))
+// Presence status table
+export const presenceStatus = pgTable('presence', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }),
+  groupId: uuid('group_id').references(() => groups.id, { onDelete: 'cascade' }),
+  isPresent: boolean('is_present').default(false),
+  status: presenceStatusEnum('status').default('unknown'),
+  lastUpdated: timestamp('last_updated').defaultNow()
+})
 
-export const residentsRelations = relations(residents, ({ one }) => ({
-  building: one(buildings, {
-    fields: [residents.buildingId],
-    references: [buildings.id],
-  }),
-  presenceStatus: one(presenceStatus, {
-    fields: [residents.id],
-    references: [presenceStatus.residentId],
-  }),
-}))
-
-export const presenceStatusRelations = relations(presenceStatus, ({ one }) => ({
-  resident: one(residents, {
-    fields: [presenceStatus.residentId],
-    references: [residents.id],
-  }),
-}))
+// Nudges table
+export const nudges = pgTable('nudges', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  fromUserId: uuid('from_user_id').references(() => users.id),
+  toUserId: uuid('to_user_id').references(() => users.id),
+  groupId: uuid('group_id').references(() => groups.id),
+  message: text('message'),
+  sentAt: timestamp('sent_at').defaultNow()
+})

@@ -5,11 +5,11 @@ import { useTranslations } from "next-intl"
 interface Resident {
   id: string
   displayName: string
-  type: 'owner' | 'resident'
-  phoneNumber?: string | null
-  phoneVerified: boolean
-  details?: string | null
+  role: 'admin' | 'member'
+  phone?: string | null
+  isVerified?: boolean
   joinedAt: Date | string
+  userId?: string
 }
 
 interface ResidentCardProps {
@@ -38,8 +38,8 @@ export const ResidentCard = ({ resident, currentUserId, presenceData }: Resident
 
         </div>
         <div className="text-xs text-zinc-500">
-        {resident.type === 'owner' && (
-            <span className="text-yellow-400 text-lg" title={t('ResidentCard.buildingOwner')}>
+        {resident.role === 'admin' && (
+            <span className="text-yellow-400 text-lg" title={t('ResidentCard.groupAdmin')}>
               👑
             </span>
           )}
@@ -47,23 +47,17 @@ export const ResidentCard = ({ resident, currentUserId, presenceData }: Resident
       </div>
         </div>
         
-        {resident.phoneNumber && (
+        {resident.phone && (
           <p className="text-sm text-zinc-400 mt-1">
             📞 <a 
-              href={`tel:${resident.phoneNumber}`}
+              href={`tel:${resident.phone}`}
               className="hover:text-zinc-300 transition-colors underline"
             >
-              {resident.phoneNumber}
+              {resident.phone}
             </a>
-            {resident.phoneVerified && (
+            {resident.isVerified && (
               <span className="ml-2 text-green-400 text-xs">{t('ResidentCard.verified')}</span>
             )}
-          </p>
-        )}
-        
-        {resident.details && (
-          <p className="text-sm text-zinc-300 mt-2 break-all">
-            {resident.details}
           </p>
         )}
       </div>

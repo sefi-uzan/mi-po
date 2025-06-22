@@ -1,23 +1,23 @@
 'use client'
-import { JoinBuilding } from "@/app/components/join-building"
+import { JoinGroup } from "@/app/components/join-group"
 import { useSearchParams } from "next/navigation"
 import { Suspense } from "react"
 
-const JoinBuildingContent = () => {
+const JoinGroupContent = () => {
   const searchParams = useSearchParams()
   const inviteCode = searchParams.get('code') || ''
 
   return (
-   <JoinBuilding initialInviteCode={inviteCode} />
+   <JoinGroup initialInviteCode={inviteCode} />
   )
 }
 
-const JoinBuildingPage = () => {
+const JoinGroupPage = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <JoinBuildingContent />
+      <JoinGroupContent />
     </Suspense>
   )
 }
 
-export default JoinBuildingPage
+export default JoinGroupPage

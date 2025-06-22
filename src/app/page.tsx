@@ -1,12 +1,13 @@
-import { cn } from "@/lib/utils"
-import { TypeSelection } from "./components/type-selection"
-import { LocaleSelector } from "./components/locale-selector"
-import Image from "next/image"
-import {getTranslations, getLocale} from 'next-intl/server';
+import { cn } from "@/lib/utils";
+import { getLocale, getTranslations } from 'next-intl/server';
+import Image from "next/image";
+import { LocaleSelector } from "./components/locale-selector";
+import { TypeSelection } from "./components/type-selection";
 
 export default async function Home() {
   const t = await getTranslations('App');
   const locale = await getLocale();
+
     return (    
     <div className="container flex flex-col items-center justify-center gap-6 px-4 py-16">
     <h1
@@ -24,7 +25,6 @@ export default async function Home() {
     <p className="text-[#ececf399] text-lg/7 md:text-xl/8 text-pretty sm:text-wrap sm:text-center text-center mb-8">
       {t('description')}
     </p>
-    
     <LocaleSelector initialLocale={locale} />
     
     <TypeSelection />

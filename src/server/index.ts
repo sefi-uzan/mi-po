@@ -1,6 +1,7 @@
+import { authRouter } from "./auth/auth.router"
+import { groupRouter } from "./group/group.router"
 import { j } from "./jstack"
-import { buildingRouter } from "./routers/building-router"
-import { authRouter } from "./routers/auth-router"
+
 
 /**
  * This is your base API.
@@ -13,14 +14,15 @@ const api = j
   .basePath("/api")
   .use(j.defaults.cors)
   .onError(j.defaults.errorHandler)
+  .get("/", (c) => c.json({ message: "Hello World" }))
 
 /**
  * This is the main router for your server.
  * All routers in /server/routers should be added here manually.
  */
 const appRouter = j.mergeRouters(api, {
-  building: buildingRouter,
   auth: authRouter,
+  group: groupRouter
 })
 
 export type AppRouter = typeof appRouter
