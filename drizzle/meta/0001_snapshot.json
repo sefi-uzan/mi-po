@@ -1,6 +1,6 @@
 {
-  "id": "03bb4370-625c-4a38-bbbb-a06ac28b2443",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "5617162a-78be-4b2e-8418-ea5931893941",
+  "prevId": "03bb4370-625c-4a38-bbbb-a06ac28b2443",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -272,13 +272,6 @@
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
-        },
-        "is_present": {
-          "name": "is_present",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
         },
         "status": {
           "name": "status",

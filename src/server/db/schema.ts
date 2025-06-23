@@ -3,7 +3,7 @@ import { pgTable, uuid, varchar, text, boolean, timestamp, pgEnum } from "drizzl
 // Enums
 export const groupTypeEnum = pgEnum('group_type', ['building', 'family'])
 export const memberRoleEnum = pgEnum('member_role', ['admin', 'member'])
-export const presenceStatusEnum = pgEnum('presence_status', ['safe', 'in_shelter', 'need_help', 'unknown'])
+export const presenceStatusEnum = pgEnum('presence_status', ['safe', 'present', 'need_help', 'unknown', 'absent'])
 
 // Users table
 export const users = pgTable('users', {
@@ -32,6 +32,7 @@ export const groupMembers = pgTable('group_members', {
   userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }),
   groupId: uuid('group_id').references(() => groups.id, { onDelete: 'cascade' }),
   role: memberRoleEnum('role').default('member'),
+  details: text('details'),
   joinedAt: timestamp('joined_at').defaultNow()
 })
 
@@ -40,7 +41,6 @@ export const presenceStatus = pgTable('presence', {
   id: uuid('id').primaryKey().defaultRandom(),
   userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }),
   groupId: uuid('group_id').references(() => groups.id, { onDelete: 'cascade' }),
-  isPresent: boolean('is_present').default(false),
   status: presenceStatusEnum('status').default('unknown'),
   lastUpdated: timestamp('last_updated').defaultNow()
 })

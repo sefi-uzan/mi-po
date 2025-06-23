@@ -1,15 +1,11 @@
 CREATE TYPE "public"."group_type" AS ENUM('building', 'family');--> statement-breakpoint
 CREATE TYPE "public"."member_role" AS ENUM('admin', 'member');--> statement-breakpoint
-CREATE TYPE "public"."presence_status" AS ENUM('safe', 'in_shelter', 'need_help', 'unknown');--> statement-breakpoint
+CREATE TYPE "public"."presence_status" AS ENUM('safe', 'present', 'need_help', 'unknown', 'absent');--> statement-breakpoint
 CREATE TABLE "group_members" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid,
 	"group_id" uuid,
 	"role" "member_role" DEFAULT 'member',
-	"apartment_number" varchar(10),
-	"medical_conditions" text,
-	"emergency_contact_name" varchar(100),
-	"emergency_contact_phone" varchar(20),
 	"joined_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
@@ -17,7 +13,6 @@ CREATE TABLE "groups" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"type" "group_type" NOT NULL,
-	"address" text,
 	"invite_code" varchar(10) NOT NULL,
 	"created_by" uuid,
 	"created_at" timestamp DEFAULT now(),
@@ -46,10 +41,8 @@ CREATE TABLE "presence" (
 CREATE TABLE "users" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"phone" varchar(20) NOT NULL,
-	"display_name" varchar(100),
+	"display_name" varchar(10) NOT NULL,
 	"is_verified" boolean DEFAULT false,
-	"verification_code" varchar(6),
-	"verification_expires_at" timestamp,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now(),
 	CONSTRAINT "users_phone_unique" UNIQUE("phone")

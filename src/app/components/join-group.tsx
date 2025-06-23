@@ -20,7 +20,7 @@ export const JoinGroup = ({ initialInviteCode = "" }: JoinGroupProps) => {
   const [phoneNumber, setPhoneNumber] = useState("")
   const [code, setCode] = useState("")
   const [displayName, setDisplayName] = useState("")
-  const [inviteCode] = useState(initialInviteCode)
+  const [inviteCode, setInviteCode] = useState(initialInviteCode)
   const router = useRouter()
   
   const countdown = useCountdown(600) // 10 minute countdown
@@ -46,7 +46,7 @@ export const JoinGroup = ({ initialInviteCode = "" }: JoinGroupProps) => {
       return await res.json()
     },
     onSuccess: () => {
-      toast.success("Account created successfully!")
+      toast.success(t('Toast.loggedIn'))
         // TODO: After creating account, join the group using the invite code
         // For now, navigate to groups page
       router.push("/groups")
@@ -142,14 +142,23 @@ export const JoinGroup = ({ initialInviteCode = "" }: JoinGroupProps) => {
           required
           tooltip={t('Tooltips.yourName')}
         />
-        
+
+        <InputWithTooltip
+          type="text"
+          placeholder={t('FormFields.groupInviteCode')}
+          value={inviteCode}
+          onChange={(e) => setInviteCode(e.target.value)}
+          required
+          tooltip={t('Tooltips.groupInviteCode')}
+        />
+
         <div className="flex gap-2">
           <button
             type="button"
             onClick={() => setStep('phone')}
             className="cursor-pointer flex-1 rounded-md text-base/6 ring-2 ring-offset-2 ring-offset-black focus-visible:outline-none focus-visible:ring-zinc-100 ring-zinc-600 hover:ring-zinc-500 h-12 px-4 py-3 bg-transparent text-zinc-300 transition"
           >
-            {t('CreateGroup.back')}  
+            {t('GroupCreate.back')}  
           </button>
           <button
             disabled={isCreating}

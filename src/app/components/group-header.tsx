@@ -2,7 +2,7 @@
 
 import { AppRouter } from "@/server"
 import { InferRouterOutputs } from "jstack"
-import { Plus, UserCheck, UserX, Edit, Trash2 } from "lucide-react"
+import { Plus, UserCheck, UserX, Edit, User } from "lucide-react"
 import { useTranslations } from "next-intl"
 
 
@@ -14,7 +14,7 @@ interface GroupHeaderProps {
   onTogglePresence?: () => void
   isAdmin?: boolean
   onEditClick?: () => void
-  onDeleteClick?: () => void
+  onEditDetailsClick?: () => void
   onLeaveClick?: () => void
 }
 
@@ -26,13 +26,10 @@ export const GroupHeader = ({
   onTogglePresence,
   isAdmin = false,
   onEditClick,
-  onDeleteClick,
+  onEditDetailsClick,
   onLeaveClick
 }: GroupHeaderProps) => {
   const t = useTranslations()
-  const totalMembers = group?.members?.length || 0
-  const presentMembers = group.members?.filter(member => presenceData[member.id] === true).length || 0
-  const awayMembers = group.members?.filter(member => presenceData[member.id] === false).length || 0
   
   const isCurrentUserPresent = currentUserId ? presenceData[currentUserId] : false
 
@@ -56,6 +53,15 @@ export const GroupHeader = ({
           </p>
         </div>
         <div className="flex items-center gap-2">
+          {onEditDetailsClick && (
+            <button
+              onClick={onEditDetailsClick}
+              className="rounded-md bg-blue-800/50 border border-blue-700 hover:bg-blue-700/50 hover:border-blue-600 text-blue-300 hover:text-blue-100 transition-all duration-200 p-2 flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <User className="w-4 h-4" />
+              <span className="text-xs hidden sm:inline">{t('GroupHeader.edit')}</span>
+            </button>
+          )}
           {currentUserId && onTogglePresence && (
             <button
               onClick={onTogglePresence}
@@ -80,15 +86,6 @@ export const GroupHeader = ({
               <span className="text-xs hidden sm:inline">{t('GroupHeader.edit')}</span>
             </button>
           )}
-          {isAdmin && onDeleteClick && (
-            <button
-              onClick={onDeleteClick}
-              className="rounded-md bg-red-800/50 border border-red-700 hover:bg-red-700/50 hover:border-red-600 text-red-300 hover:text-red-100 transition-all duration-200 p-2 flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
-              <Trash2 className="w-4 h-4" />
-              <span className="text-xs hidden sm:inline">{t('GroupHeader.delete')}</span>
-            </button>
-          )}
           {onLeaveClick && (
             <button
               onClick={onLeaveClick}
@@ -108,22 +105,7 @@ export const GroupHeader = ({
         </div>
        </div>
         
-        {totalMembers > 0 && (
-          <div className="flex items-center gap-3">
-            <div className="flex flex-col items-center bg-blue-500/20 border border-blue-500/30 rounded-lg px-3 py-2 w-[70px] h-[50px] justify-center">
-              <span className="text-blue-400 font-bold text-lg leading-none">{totalMembers}</span>
-              <span className="text-blue-300 text-xs font-medium">{t('GroupHeader.total')}</span>
-            </div>
-            <div className="flex flex-col items-center bg-green-500/20 border border-green-500/30 rounded-lg px-3 py-2 w-[70px] h-[50px] justify-center">
-              <span className="text-green-400 font-bold text-lg leading-none">{presentMembers}</span>
-              <span className="text-green-300 text-xs font-medium">{t('GroupHeader.present')}</span>
-            </div>
-            <div className="flex flex-col items-center bg-red-500/20 border border-red-500/30 rounded-lg px-3 py-2 w-[70px] h-[50px] justify-center">
-              <span className="text-red-400 font-bold text-lg leading-none">{awayMembers}</span>
-              <span className="text-red-300 text-xs font-medium">{t('GroupHeader.away')}</span>
-            </div>
-          </div>
-        )}
+       
       </div>
     </div>
   )

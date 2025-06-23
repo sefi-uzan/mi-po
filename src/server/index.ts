@@ -1,6 +1,7 @@
 import { authRouter } from "./auth/auth.router"
 import { groupRouter } from "./group/group.router"
 import { j } from "./jstack"
+import { presenceRouter } from "./presence/presence.router"
 
 
 /**
@@ -22,7 +23,8 @@ const api = j
  */
 const appRouter = j.mergeRouters(api, {
   auth: authRouter,
-  group: groupRouter
+  group: groupRouter,
+  presence: presenceRouter
 })
 
 export type AppRouter = typeof appRouter

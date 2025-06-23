@@ -89,7 +89,8 @@ export class GroupService {
       joinedAt: groupMembers.joinedAt,
       displayName: users.displayName,
       phone: users.phone,
-      isVerified: users.isVerified
+      isVerified: users.isVerified,
+      details: groupMembers.details
     })
     .from(groupMembers)
     .innerJoin(users, eq(groupMembers.userId, users.id))
@@ -143,13 +144,45 @@ export class GroupService {
     return updatedGroup
   }
 
-  async deleteGroup(groupId: string): Promise<{ success: boolean }> {
-    await this.db.delete(groups).where(eq(groups.id, groupId))
-    return { success: true }
+  async updateGroupMemberDetails(groupId: string, userId: string, displayName?: string, details?: string) {
+    let updatedUser
+    let updatedGroupMember
+    if (details) {
+      updatedGroupMember = await this.db.update(groupMembers)
+      .set({ details })
+      .where(and(eq(groupMembers.groupId, groupId), eq(groupMembers.userId, userId))).returning()
+    }
+
+    if (displayName) {
+      updatedUser = await this.db.update(users)
+      .set({ displayName })
+      .where(eq(users.id, userId)).returning()
+    }
+   
+
+    return { updatedGroupMember, updatedUser }
+  }
+
+  async getCurrentGroupMember(userId: string, groupId: string) {
+    const [groupMember] = await this.db.select().from(groupMembers)
+      .where(and(eq(groupMembers.userId, userId), eq(groupMembers.groupId, groupId))).limit(1)
+
+    const [user] = await this.db.select().from(users)
+      .where(eq(users.id, userId)).limit(1)
+    const combined = { groupMember, user }
+    return combined
+  }
+
+  async deleteGroup(groupId: string) {
+    const [deletedGroup] = await this.db.delete(groups).where(eq(groups.id, groupId)).returning()
+
+    return { deletedGroup }
   }
 
   async leaveGroup(groupId: string, userId: string) {
-    await this.db.delete(groupMembers).where(and(eq(groupMembers.groupId, groupId), eq(groupMembers.userId, userId)))
+    const [deletedGroup] = await this.db.delete(groupMembers).where(and(eq(groupMembers.groupId, groupId), eq(groupMembers.userId, userId))).returning()
+
+    return { deletedGroup }
   }
 
   generateInviteCode(): string {

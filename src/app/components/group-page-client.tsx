@@ -5,25 +5,48 @@ import { useQuery } from "@tanstack/react-query"
 import { useTranslations } from "next-intl"
 import { useParams } from "next/navigation"
 import QRCode from "qrcode"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
-import { DeleteGroupDialog } from "./delete-group-dialog"
 import { EditGroupDialog } from "./edit-group-dialog"
+import { EditMemberDetailsDialog } from "./edit-member-details-dialog"
 import { GroupHeader } from "./group-header"
 import { InviteDialog } from "./invite-dialog"
 import { ResidentCard } from "./resident-card"
 import { LeaveGroupDialog } from "./leave-group-dialog"
+import { PresenceSelector } from "./presence-selector"
+import { GroupStats } from "./group-stats"
 
+interface PresenceData {
+  id: string
+  userId: string | null
+  groupId: string | null
+  status: "unknown" | "safe" | "present" | "need_help" | "absent" | null
+  lastUpdated: Date | null
+}
 
 export const GroupPageClient = () => {
   const t = useTranslations()
   const [showInviteDialog, setShowInviteDialog] = useState(false)
   const [showEditDialog, setShowEditDialog] = useState(false)
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [showEditDetailsDialog, setShowEditDetailsDialog] = useState(false)
   const [showLeaveDialog, setShowLeaveDialog] = useState(false)
   const [qrCode, setQRCode] = useState("")
-  const [currentUserId] = useState<string>("")
+  const [currentUserId, setCurrentUserId] = useState<string>("")
   const { groupId } = useParams()
+
+  const { data: currentMember } = useQuery({
+    queryKey: ['current-member', groupId],
+    queryFn: async () => {
+      const response = await client.group.getCurrentGroupMember.$get({ groupId: groupId as string })
+      return response.json()
+    },
+  })
+
+  useEffect(() => {
+    if (currentMember?.groupMember?.id) {
+      setCurrentUserId(currentMember.groupMember.id)
+    }
+  }, [currentMember])
 
   const { data: groupData, isLoading, error } = useQuery({
     queryKey: ['get-group', groupId],
@@ -31,6 +54,16 @@ export const GroupPageClient = () => {
       const response = await client.group.getGroupDetails.$post({ groupId: groupId as string })
       return response.json()
     },
+  })
+
+  const { data: presenceData } = useQuery({
+    queryKey: ['group-presence', groupId],
+    queryFn: async () => {
+      const response = await client.presence.getGroupPresence.$get({ groupId: groupId as string })
+      return response.json()
+    },
+    refetchInterval: 5000,
+    enabled: !!groupId
   })
 
   const generateQRCode = async (inviteCode: string) => {
@@ -54,8 +87,8 @@ export const GroupPageClient = () => {
     setShowEditDialog(true)
   }
 
-  const handleDeleteClick = () => {
-    setShowDeleteDialog(true)
+  const handleEditDetailsClick = () => {
+    setShowEditDetailsDialog(true)
   }
 
   const handleLeaveClick = () => {
@@ -88,8 +121,17 @@ export const GroupPageClient = () => {
     phone: member.phone,
     isVerified: member.isVerified || false,
     joinedAt: member.joinedAt || new Date(),
-    userId: member.userId || undefined
+    userId: member.userId || undefined,
+    details: member.details || undefined
   })).filter(member => member.role !== null)
+
+  // Create presence lookup for easier access
+  const presenceLookup = presenceData?.presence?.reduce((acc: Record<string, PresenceData>, presence: PresenceData) => {
+    if (presence.userId) {
+      acc[presence.userId] = presence
+    }
+    return acc
+  }, {} as Record<string, PresenceData>) || {}
 
   return (
     <>
@@ -98,16 +140,29 @@ export const GroupPageClient = () => {
           group={groupData}
           onInviteClick={handleInviteClick}
           onEditClick={isAdmin ? handleEditClick : undefined}
-          onDeleteClick={isAdmin ? handleDeleteClick : undefined}
+          onEditDetailsClick={handleEditDetailsClick}
           onLeaveClick={!isAdmin ? handleLeaveClick : undefined}
           isAdmin={isAdmin}
         />
+
+        {presenceData?.presence && (
+          <GroupStats presenceData={presenceData.presence} />
+        )}
+
+      
 
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-medium text-zinc-100">
               {t('GroupPage.members')} ({transformedMembers.length})
             </h3>
+            {currentUserId && presenceData?.presence && (
+          <PresenceSelector 
+            groupId={groupData.group.id} 
+            currentUserId={currentUserId}
+            presenceData={presenceData.presence}
+          />
+        )}
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
@@ -116,6 +171,7 @@ export const GroupPageClient = () => {
                 key={member.id} 
                 resident={member}
                 currentUserId={currentUserId}
+                presenceStatus={presenceLookup[member.userId || member.id]}
               />
             ))}
           </div>
@@ -136,11 +192,12 @@ export const GroupPageClient = () => {
         groupName={groupData.group.name}
       />
 
-      <DeleteGroupDialog
-        show={showDeleteDialog}
-        onClose={() => setShowDeleteDialog(false)}
+      <EditMemberDetailsDialog
+        show={showEditDetailsDialog}
+        onClose={() => setShowEditDetailsDialog(false)}
         groupId={groupData.group.id}
-        groupName={groupData.group.name}
+        currentDisplayName={currentMember?.user?.displayName || ""}
+        currentDetails={currentMember?.groupMember?.details || ""}
       />
 
       <LeaveGroupDialog

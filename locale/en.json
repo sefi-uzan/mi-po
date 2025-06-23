@@ -1,4 +1,6 @@
 {
+    "title": "Mi Po",
+    "description": "An emergency situation building resident system",
     "App": {
         "title": "Mi Po",
         "description": "An emergency situation building resident system"
@@ -58,14 +60,14 @@
         "loading": "Loading your groups...",
         "noGroups": "You're not part of any groups yet",
         "createFirstGroup": "Create your first group",
-        "joinGroup": "Join a group",
+        "joinGroup": "Join",
         "building": "Building",
         "family": "Family",
         "admin": "Admin",
         "member": "Member",
         "members": "members",
         "yourGroups": "Your Groups",
-        "createGroup": "Create Group",
+        "createGroup": "Create",
         "noGroupsTitle": "No groups found",
         "noGroupsDescription": "Create a new group to get started"
     },
@@ -89,7 +91,9 @@
         "residents": "Residents ({count})",
         "noResidents": "No residents found. Invite people to join your group!",
         "backToGroups": "Back to Groups",
-        "members": "Members"
+        "members": "Members",
+        "groupNotFound": "Group not found",
+        "errorLoadingGroup": "Error loading group"
     },
     "GroupHeader": {
         "created": "Created",
@@ -101,6 +105,7 @@
         "updateGroup": "Update Group",
         "updating": "Updating...",
         "deleting": "Deleting...",
+        "confirm": "Confirm",
         "deleteWarning": "This will permanently delete your group and remove all members.",
         "deleteConfirmation": "To confirm, type \"{groupName}\" in the box below:",
         "typeGroupName": "Type group name to confirm",
@@ -117,7 +122,7 @@
         "leaveGroupWarning": "Are you sure you want to leave this group? You will no longer be able to access group resources and will need to be invited again."
     },
     "ResidentCard": {
-        "you": "(You)",
+        "you": "You",
         "groupOwner": "Group Owner",
         "groupAdmin": "Group Admin",
         "joined": "Joined",
@@ -158,6 +163,15 @@
         "additionalDetailsCreate": "Any additional information about yourself or the group that you'd like to share with other residents. This field is optional",
         "additionalDetailsJoin": "Any additional information about yourself that you'd like to share with other residents in the group. This field is optional"
     },
+    "Presence": {
+        "groupStatus": "Group Status",
+        "myStatus": "My Status",
+        "present": "Present",
+        "absent": "Absent",
+        "unknown": "Unknown",
+        "safe": "Safe",
+        "needHelp": "Need Help"
+    },
     "Toast": {
         "presenceUpdated": "status updated!",
         "presenceUpdateFailed": "Failed to update status",
@@ -172,6 +186,10 @@
         "groupDeleted": "Group deleted successfully!",
         "groupDeleteFailed": "Failed to delete group",
         "groupLeft": "Successfully left group!",
-        "groupLeaveFailed": "Failed to leave group"
+        "groupLeaveFailed": "Failed to leave group",
+        "memberDetailsUpdated": "Details updated successfully!",
+        "memberDetailsUpdateFailed": "Failed to update details",
+        "errorGeneratingQR": "Error generating QR code",
+        "loggedIn": "Logged in successfully!"
     }
 }

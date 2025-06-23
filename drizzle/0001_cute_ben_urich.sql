@@ -1,0 +1,1 @@
+ALTER TABLE "presence" DROP COLUMN "is_present";

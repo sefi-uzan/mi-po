@@ -51,6 +51,16 @@ export const groupRouter = j.router({
       return c.superjson({ groups })
     }),
 
+  getCurrentGroupMember: groupProtectedProcedure
+    .input(z.object({
+      groupId: z.string().uuid()
+    }))
+    .get(async ({ c, ctx, input }) => {
+      const { groupService, user } = ctx
+      const member = await groupService.getCurrentGroupMember(user.id, input.groupId)
+      return c.superjson(member)
+    }),
+
   getGroupDetails: groupProtectedProcedure
     .input(z.object({
       groupId: z.string().uuid()
@@ -92,6 +102,30 @@ export const groupRouter = j.router({
       })
     }),
 
+  updateGroupMemberDetails: groupProtectedProcedure
+    .input(z.object({
+      groupId: z.string().uuid(),
+      displayName: z.string().min(3).max(10).optional(),
+      details: z.string().optional()
+    }))
+    .post(async ({ c, ctx, input }) => {
+      const { groupService, user } = ctx
+      const { groupId, displayName, details } = input
+      const updatedGroupMember = await groupService.updateGroupMemberDetails(groupId, user.id, displayName, details)
+
+      const displayNameFailed = displayName !== undefined && !updatedGroupMember.updatedUser
+      const detailsFailed = details !== undefined && !updatedGroupMember.updatedGroupMember
+
+      if (displayNameFailed || detailsFailed) {
+        throw new HTTPException(400, { message: "Failed to update group member details" })
+      }
+
+      return c.superjson({
+        success: true,
+        groupMember: updatedGroupMember
+      })
+    }),
+
   deleteGroup: groupProtectedProcedure
     .input(z.object({
       groupId: z.string().uuid()
@@ -105,9 +139,16 @@ export const groupRouter = j.router({
         throw new HTTPException(403, { message: "Only admins can delete groups" })
       }
 
-      const result = await groupService.deleteGroup(input.groupId)
+      const deletedGroup = await groupService.deleteGroup(input.groupId)
+
+      if (!deletedGroup) {
+        throw new HTTPException(400, { message: "Failed to delete group" })
+      }
       
-      return c.superjson(result)
+      return c.superjson({
+        success: true,
+        deletedGroup
+      })
     }),
 
   leaveGroup: groupProtectedProcedure

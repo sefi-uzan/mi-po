@@ -6,6 +6,7 @@ import { X } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useState, useEffect } from "react"
 import { toast } from "react-hot-toast"
+import { useRouter } from "next/navigation"
 
 interface EditGroupDialogProps {
   show: boolean
@@ -16,7 +17,10 @@ interface EditGroupDialogProps {
 
 export const EditGroupDialog = ({ show, onClose, groupId, groupName }: EditGroupDialogProps) => {
   const t = useTranslations()
+  const router = useRouter()
   const [editGroupName, setEditGroupName] = useState("")
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [deleteConfirmName, setDeleteConfirmName] = useState("")
   const queryClient = useQueryClient()
 
   const updateGroupMutation = useMutation({
@@ -34,8 +38,24 @@ export const EditGroupDialog = ({ show, onClose, groupId, groupName }: EditGroup
     }
   })
 
+  const deleteGroupMutation = useMutation({
+    mutationFn: async (data: { groupId: string }) => {
+      const res = await client.group.deleteGroup.$post(data)
+      return await res.json()
+    },
+    onSuccess: () => {
+      toast.success(t('Toast.groupDeleted'))
+      router.push('/groups')
+    },
+    onError: (error) => {
+      toast.error(error.message || t('Toast.groupDeleteFailed'))
+    }
+  })
+
   const handleClose = () => {
     setEditGroupName("")
+    setShowDeleteConfirm(false)
+    setDeleteConfirmName("")
     onClose()
   }
 
@@ -46,13 +66,27 @@ export const EditGroupDialog = ({ show, onClose, groupId, groupName }: EditGroup
     }
   }
 
+  const handleDeleteClick = () => {
+    setShowDeleteConfirm(true)
+  }
+
+  const handleDeleteConfirm = () => {
+    if (deleteConfirmName === groupName) {
+      deleteGroupMutation.mutate({ groupId })
+    }
+  }
+
   useEffect(() => {
     if (show) {
       setEditGroupName(groupName)
+      setShowDeleteConfirm(false)
+      setDeleteConfirmName("")
     }
   }, [show, groupName])
 
   if (!show) return null
+
+  const isDeleteConfirmValid = deleteConfirmName === groupName
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
@@ -100,6 +134,41 @@ export const EditGroupDialog = ({ show, onClose, groupId, groupName }: EditGroup
             >
               {updateGroupMutation.isPending ? t('GroupHeader.updating') : t('GroupHeader.updateGroup')}
             </button>
+          </div>
+
+          <div className="pt-4 border-t border-zinc-700">
+            <button
+              type="button"
+              onClick={showDeleteConfirm ? handleDeleteConfirm : handleDeleteClick}
+              disabled={showDeleteConfirm ? !isDeleteConfirmValid || deleteGroupMutation.isPending : deleteGroupMutation.isPending}
+              className={`w-full px-4 py-2 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                showDeleteConfirm && isDeleteConfirmValid
+                  ? 'bg-red-600 hover:bg-red-700 text-white'
+                  : 'bg-red-800/50 border border-red-700 hover:bg-red-700/50 hover:border-red-600 text-red-300 hover:text-red-100'
+              }`}
+            >
+              {deleteGroupMutation.isPending 
+                ? t('GroupHeader.deleting') 
+                : showDeleteConfirm && isDeleteConfirmValid 
+                  ? t('GroupHeader.confirm')
+                  : t('GroupHeader.deleteGroup')
+              }
+            </button>
+
+            {showDeleteConfirm && (
+              <div className="mt-3 space-y-2">
+                <p className="text-sm text-red-300">
+                  This cannot be undone, enter the group name and click confirm to delete
+                </p>
+                <input
+                  type="text"
+                  value={deleteConfirmName}
+                  onChange={(e) => setDeleteConfirmName(e.target.value)}
+                  className="w-full px-3 py-2 bg-zinc-800 border border-red-600 rounded-md text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  placeholder={groupName}
+                />
+              </div>
+            )}
           </div>
         </form>
       </div>

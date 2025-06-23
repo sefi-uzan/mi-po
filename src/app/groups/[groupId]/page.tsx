@@ -1,8 +1,8 @@
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
 import { GroupPageClient } from "@/app/components/group-page-client"
 import { LocaleSelector } from "@/app/components/locale-selector"
+import { ArrowLeft } from "lucide-react"
 import { getLocale, getTranslations } from "next-intl/server"
+import Link from "next/link"
 
 
 
@@ -23,7 +23,7 @@ const GroupPage = async ({ params }: {params: Promise<{groupId: string}>}) => {
 
   return (
     <div className="container flex flex-col items-center justify-center gap-6">
-      <div className="flex items-center justify-between w-full max-w-4xl">
+      <div className="flex items-center justify-between w-full max-w-4xl px-4 md:px-0">
         <Link
           href="/groups"
           className="flex items-center gap-2 text-zinc-300 hover:text-white transition-colors"
