@@ -34,7 +34,7 @@ const GroupCreate = () => {
         onSuccess: (data) => {
             toast.success(t('Toast.groupCreated'))
             if (data.group?.id) {
-                router.push(`/groups/group/${data.group.id}`)
+                router.push(`/groups/${data.group.id}`)
             } else {
                 router.push('/groups')
             }

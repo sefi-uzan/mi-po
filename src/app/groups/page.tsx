@@ -94,7 +94,7 @@ const GroupsDashboard = () => {
                             {groups.map((group) => (
                                 <Link
                                     key={group.group.id}
-                                    href={`/groups/group/${group.group.id}`}
+                                    href={`/groups/${group.group.id}`}
                                     className="block p-4 rounded-lg bg-zinc-800/50 hover:bg-zinc-700/50 transition-colors border border-zinc-700"
                                 >
                                     <div className="flex items-start justify-between mb-3">

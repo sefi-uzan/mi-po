@@ -4,14 +4,10 @@ import { GroupPageClient } from "@/app/components/group-page-client"
 import { LocaleSelector } from "@/app/components/locale-selector"
 import { getLocale, getTranslations } from "next-intl/server"
 
-interface GroupPageProps {
-  params: {
-    groupId: string
-  }
-}
 
-const GroupPage = async ({ params }: GroupPageProps) => {
-  const { groupId } = params
+
+const GroupPage = async ({ params }: {params: Promise<{groupId: string}>}) => {
+  const { groupId } = await params
   const locale = await getLocale()
   const t = await getTranslations()
 
