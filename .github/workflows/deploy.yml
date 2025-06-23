@@ -31,8 +31,11 @@ jobs:
       - name: Run linting
         run: yarn lint
 
+      - name: Run build
+        run: yarn build
+
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          wranglerVersion: "3"
+          command: deploy src/server/index.ts
