@@ -79,11 +79,11 @@ export const authRouter = j.router({
       if (!normalizedPhone) {
         throw new HTTPException(400, { message: "Invalid phone number" })
       }
-      // const result = await authService.verifyCode(normalizedPhone, input.code)
+      const result = await authService.verifyCode(normalizedPhone, input.code)
       
-      // if (!result.success) {
-      //   throw new HTTPException(401, { message: "Invalid verification code" })
-      // }
+      if (!result.success) {
+        throw new HTTPException(401, { message: "Invalid verification code" })
+      }
 
       const user = await authService.findUserByPhone(normalizedPhone)
 
