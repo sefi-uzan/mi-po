@@ -42,4 +42,6 @@ A `.env` file must exist at the project root with these variables (see `README.m
 - The project uses `yarn` 1.22.22 (classic). Do not use npm or pnpm.
 - Node.js 22 is required (matches CI).
 - No automated test suite exists (no test framework configured). Validation is via `yarn lint`, `yarn tsc --noEmit`, and `yarn build`.
-- Tailwind CSS v4 is used with the PostCSS plugin (`@tailwindcss/postcss`), not the older `tailwind.config.js` approach. Styles may not render with full dark-theme gradients in unstyled/JS-disabled views.
+- Tailwind CSS v4 is used with the PostCSS plugin (`@tailwindcss/postcss`), not the older `tailwind.config.js` approach.
+- **Important:** If you run `yarn build` and then `yarn dev`, the stale `.next/` directory from the production build will cause CSS to not load in dev mode (the CSS file returns 404). Always run `rm -rf .next` before starting `yarn dev` if you previously ran `yarn build`.
+- The dev server may pick a different port if 3000 is in use (e.g. 3001, 3002). Check the startup log for the actual port.
