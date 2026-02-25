@@ -48,7 +48,7 @@ const authMiddleware = j.middleware(async ({ c, next }) => {
     throw new HTTPException(401, { message: "Unauthorized" })
   }
   
-  const decoded = await verify(token, JWT_SECRET) as ExtendedJWTPayload
+  const decoded = await verify(token, JWT_SECRET, "HS256") as ExtendedJWTPayload
   if (!decoded.id) {
    throw new HTTPException(401, { message: "Unauthorized" })
   }
